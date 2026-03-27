@@ -1,10 +1,12 @@
-//declaring additional variables
+//declaring a few additional variables
 let x = 300;
 let y = 350;
-let xSpeed = 2, ySpeed = -1;
+let xSpeed = 0; //decreasing speeds
+let ySpeed = 0;
 let size = 90;
 let isGrowing = true;
-let redVal = 0, greenVal = 0;
+let redVal = 0;
+let greenVal = 0;
 const sunR = 30;
 
 function setup() {
