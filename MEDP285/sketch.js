@@ -1,8 +1,8 @@
 //declaring a few additional variables
 let x = 300;
 let y = 350;
-let xSpeed = 0; //decreasing speeds
-let ySpeed = 0;
+let xSpeed = -0.5; //decreasing speeds
+let ySpeed = 0.4;
 let size = 90;
 let isGrowing = true;
 let redVal = 0;
@@ -16,8 +16,8 @@ function setup() {
 
 function draw() {
   //replaced previous redVal + greenVal lines to transition back to a night sky
-  redVal = cos(frameCount * 0.01) * 110 + 110;
-  greenVal = cos(frameCount * 0.01) * 30 + 30;
+  redVal = sin(frameCount * 0.01) * 110 + 110;
+  greenVal = sin(frameCount * 0.01) * 30 + 30;
 
   background(redVal, greenVal, 0);
 
