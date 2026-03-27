@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Business Name Here</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:       #c97b7b;
+      --rose-light: #e8a9a9;
+      --rose-pale:  #f5dede;
+      --cream:      #fdf8f6;
+      --warm-white: #fefcfb;
+      --dark:       #1a1a1a;
+      --mid:        #5a5a5a;
+      --light:      #999;
+      --border:     #ede8e5;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--warm-white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(253,248,246,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--serif); font-size: 20px; font-weight: 500;
+      letter-spacing: 0.02em; color: var(--dark); text-decoration: none;
+    }
+    .nav-logo svg { width: 18px; height: 18px; opacity: 0.7; }
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px; font-weight: 400; color: var(--mid);
+      text-decoration: none; letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--dark); }
+    .btn-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 22px;
+      background: var(--rose); color: #fff;
+      border: none; border-radius: 100px;
+      font-family: var(--sans); font-size: 13px; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-pill:hover { background: #b86d6d; transform: translateY(-1px); }
+    .btn-pill.outline {
+      background: transparent; color: var(--rose);
+      border: 1.5px solid var(--rose);
+    }
+    .btn-pill.outline:hover { background: var(--rose); color: #fff; }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      margin-top: 64px;
+      height: calc(100vh - 64px);
+      min-height: 540px;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        135deg,
+        #d4b5b5 0%,
+        #c9a0a0 25%,
+        #b8a0a8 50%,
+        #a0aab8 75%,
+        #9eb5c0 100%
+      );
+    }
+    /* Soft vignette overlay */
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
+    }
+    /* Placeholder silhouette figures */
+    .hero-figures {
+      position: absolute; inset: 0;
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden;
+    }
+    .hero-figures::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 180px 320px at 20% 90%, rgba(180,140,130,0.6) 0%, transparent 70%),
+        radial-gradient(ellipse 120px 280px at 38% 95%, rgba(160,120,120,0.5) 0%, transparent 70%),
+        radial-gradient(ellipse 100px 260px at 55% 92%, rgba(170,130,130,0.5) 0%, transparent 70%),
+        radial-gradient(ellipse 130px 300px at 72% 90%, rgba(175,140,130,0.5) 0%, transparent 70%),
+        radial-gradient(ellipse 110px 270px at 87% 93%, rgba(160,130,130,0.4) 0%, transparent 70%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center; color: #fff;
+      padding: 0 24px;
+      max-width: 600px;
+    }
+    .hero-content h1 {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    }
+    .hero-content p {
+      font-size: 14px; font-weight: 300;
+      line-height: 1.7; opacity: 0.9;
+      margin-bottom: 28px;
+      max-width: 420px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ─── SECTION WRAPPER ─── */
+    .section { padding: 90px 48px; }
+    .section-label {
+      display: block; text-align: center;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--light);
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 300; line-height: 1.2;
+      text-align: center; color: var(--dark);
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      text-align: center; font-size: 13.5px; color: var(--mid);
+      max-width: 460px; margin: 0 auto 52px; line-height: 1.7;
+    }
+
+    /* ─── INTRO ─── */
+    #intro { background: var(--warm-white); }
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 860px;
+      margin: 0 auto 52px;
+    }
+    .intro-img {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .intro-img.tall { aspect-ratio: 3/4; grid-row: span 2; }
+    .img-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #e8d5d5 0%, #d5c5c0 50%, #c5b5b8 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .img-placeholder svg { opacity: 0.3; width: 48px; height: 48px; }
+    .intro-features {
+      display: flex; justify-content: center; gap: 60px;
+      margin-bottom: 36px;
+    }
+    .feature {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 10px; max-width: 180px; text-align: center;
+    }
+    .feature-icon {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .feature-icon svg { width: 26px; height: 26px; stroke: var(--rose); fill: none; stroke-width: 1.5; }
+    .feature h3 { font-size: 13px; font-weight: 500; color: var(--dark); }
+    .feature p  { font-size: 12px; color: var(--mid); line-height: 1.6; }
+
+    /* ─── CLASSES ─── */
+    #classes { background: var(--cream); }
+    .classes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 900px; margin: 0 auto;
+    }
+    .class-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .class-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.07); }
+    .class-card-img {
+      width: 100%; aspect-ratio: 16/9; overflow: hidden;
+    }
+    .class-card-img .img-placeholder {
+      background: linear-gradient(135deg, #e0cece 0%, #cec0c0 50%, #c0b5b8 100%);
+    }
+    .class-card-body { padding: 18px 20px 16px; }
+    .class-card-body h3 { font-family: var(--serif); font-size: 18px; font-weight: 400; margin-bottom: 6px; }
+    .class-card-body p  { font-size: 12.5px; color: var(--mid); line-height: 1.6; margin-bottom: 12px; }
+    .link-rose {
+      font-size: 12px; font-weight: 500; color: var(--rose);
+      text-decoration: none; letter-spacing: 0.02em;
+      transition: opacity 0.2s;
+    }
+    .link-rose:hover { opacity: 0.7; }
+
+    /* ─── BENEFITS ─── */
+    #benefits { background: var(--warm-white); }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 860px; margin: 0 auto;
+    }
+    .benefit {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .benefit-icon { color: var(--rose); }
+    .benefit-icon svg { width: 22px; height: 22px; stroke: var(--rose); fill: none; stroke-width: 1.5; }
+    .benefit h3 { font-size: 14px; font-weight: 500; }
+    .benefit p  { font-size: 12.5px; color: var(--mid); line-height: 1.6; }
+
+    /* ─── TESTIMONIALS ─── */
+    #testimonials { background: var(--cream); }
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; max-width: 900px; margin: 0 auto;
+    }
+    .testimonial {
+      background: #fff; border-radius: 16px;
+      padding: 28px 24px;
+      border: 1px solid var(--border);
+    }
+    .stars { color: var(--rose); font-size: 13px; margin-bottom: 12px; letter-spacing: 2px; }
+    .testimonial p { font-size: 13px; color: var(--mid); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+    .testimonial-author { font-size: 12.5px; font-weight: 500; color: var(--dark); }
+
+    /* ─── PRICING ─── */
+    #pricing { background: var(--warm-white); }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; max-width: 860px; margin: 0 auto;
+    }
+    .price-card {
+      background: #fff; border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 28px 24px 24px;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .price-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.07); }
+    .price-card.popular {
+      border-color: var(--rose-light);
+      box-shadow: 0 4px 24px rgba(201,123,123,0.12);
+    }
+    .popular-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--rose); color: #fff;
+      font-size: 10.5px; font-weight: 500; letter-spacing: 0.06em;
+      padding: 4px 14px; border-radius: 100px;
+    }
+    .plan-name { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+    .plan-price {
+      font-family: var(--serif);
+      font-size: 38px; font-weight: 300;
+      margin-bottom: 4px;
+    }
+    .plan-price span { font-size: 14px; font-weight: 400; color: var(--mid); }
+    .plan-desc { font-size: 12px; color: var(--mid); margin-bottom: 20px; line-height: 1.5; }
+    .plan-features {
+      list-style: none; display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 22px;
+    }
+    .plan-features li {
+      font-size: 12.5px; color: var(--mid);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .plan-features li::before {
+      content: '';
+      display: inline-block; width: 14px; height: 14px;
+      background: var(--rose-pale); border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ─── FAQ ─── */
+    #faq { background: var(--cream); }
+    .faq-layout {
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 60px; max-width: 860px; margin: 0 auto;
+    }
+    .faq-intro h2 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3vw, 38px);
+      font-weight: 300; line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .faq-intro p { font-size: 13px; color: var(--mid); line-height: 1.7; }
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 0; background: none; border: none; cursor: pointer;
+      font-family: var(--sans); font-size: 13.5px; font-weight: 400;
+      color: var(--dark); text-align: left; gap: 16px;
+    }
+    .faq-q svg {
+      width: 16px; height: 16px; stroke: var(--mid); fill: none;
+      stroke-width: 2; flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-q svg { transform: rotate(180deg); }
+    .faq-a {
+      font-size: 13px; color: var(--mid); line-height: 1.7;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.3s;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding-bottom: 16px; }
+
+    /* ─── CONTACT ─── */
+    #contact { background: var(--warm-white); }
+    .contact-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; max-width: 860px; margin: 0 auto;
+    }
+    .contact-info h2 {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 300; margin-bottom: 14px;
+    }
+    .contact-info p { font-size: 13px; color: var(--mid); line-height: 1.7; margin-bottom: 24px; }
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 12px; font-weight: 500; color: var(--dark); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: var(--sans); font-size: 13px;
+      padding: 11px 14px; border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--cream); color: var(--dark);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #bbb; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--rose-light); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .btn-full { width: 100%; padding: 13px; font-size: 14px; border-radius: 12px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark); color: rgba(255,255,255,0.6);
+      padding: 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .footer-logo {
+      font-family: var(--serif); font-size: 20px; font-weight: 400;
+      color: #fff; letter-spacing: 0.02em;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 12.5px; color: rgba(255,255,255,0.5);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 12px; }
+
+    /* ─── GALLERY STRIP ─── */
+    #gallery { background: var(--cream); padding: 60px 0; overflow: hidden; }
+    .gallery-strip {
+      display: flex; gap: 16px; padding: 0 48px;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .gallery-strip::-webkit-scrollbar { display: none; }
+    .gallery-item {
+      flex-shrink: 0; width: 220px; height: 280px;
+      border-radius: 16px; overflow: hidden;
+    }
+    .gallery-item:nth-child(even) { margin-top: 24px; }
+    .gallery-item .img-placeholder {
+      background: linear-gradient(135deg, #e8d5d5 0%, #d5c5c0 60%, #c8b8bb 100%);
+    }
+    .gallery-item:nth-child(2) .img-placeholder { background: linear-gradient(135deg, #d5dce8 0%, #c0c8d5 60%, #b8bdc8 100%); }
+    .gallery-item:nth-child(3) .img-placeholder { background: linear-gradient(135deg, #e8e0d5 0%, #d5ccc0 60%, #c8c0b8 100%); }
+    .gallery-item:nth-child(4) .img-placeholder { background: linear-gradient(135deg, #dde8d5 0%, #ccd5c0 60%, #bec8b8 100%); }
+    .gallery-item:nth-child(5) .img-placeholder { background: linear-gradient(135deg, #e8d5e0 0%, #d5c0cc 60%, #c8b8c0 100%); }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .section { padding: 60px 20px; }
+      .intro-grid { grid-template-columns: 1fr; }
+      .intro-img.tall { aspect-ratio: 4/3; grid-row: span 1; }
+      .classes-grid, .benefits-grid, .testimonials-grid,
+      .pricing-grid, .faq-layout, .contact-layout { grid-template-columns: 1fr; }
+      .intro-features { flex-direction: column; align-items: center; }
+      footer { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 0v10m0 0l-4-4m4 4l4-4"/>
+    </svg>
+    Asana
+  </a>
+  <ul class="nav-links">
+    <li><a href="#classes">Classes</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#benefits">Benefits</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="#contact" class="btn-pill">Book a Class</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-figures"></div>
+  <div class="hero-content">
+    <h1>Transform your body and mind through yoga</h1>
+    <p>Join a community of mindful movers. In-studio and online yoga classes for all levels, designed to reconnect your body and breath.</p>
+    <a href="#contact" class="btn-pill">Book a Class</a>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section id="intro" class="section">
+  <span class="section-label">Introduction</span>
+  <h2 class="section-title">A mindful space to reconnect with yourself</h2>
+  <p class="section-sub">We help you reconnect with your body and mind through mindful, accessible yoga sessions.</p>
+
+  <div class="intro-grid">
+    <div class="intro-img tall">
+      <div class="img-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="8" r="3"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+      </div>
+    </div>
+    <div class="intro-img">
+      <div class="img-placeholder" style="background:linear-gradient(135deg,#d5dce8,#c0c8d5,#b8bdc8)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="8" r="3"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+      </div>
+    </div>
+    <div class="intro-img">
+      <div class="img-placeholder" style="background:linear-gradient(135deg,#dde8d5,#ccd5c0,#bec8b8)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="8" r="3"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="intro-features">
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <h3>Personalized Classes</h3>
+      <p>Tailored flows for every level, from complete beginners to advanced practitioners.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/><path d="M8 12s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <h3>Holistic Approach</h3>
+      <p>Combining breathwork, movement, and meditation for full-body harmony.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      </div>
+      <h3>Local &amp; Online</h3>
+      <p>Join us in-studio or from the comfort of your home. Flexibility is key.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center">
+    <a href="#classes" class="btn-pill">Join a Class Today</a>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-strip">
+    <div class="gallery-item"><div class="img-placeholder"></div></div>
+    <div class="gallery-item"><div class="img-placeholder"></div></div>
+    <div class="gallery-item"><div class="img-placeholder"></div></div>
+    <div class="gallery-item"><div class="img-placeholder"></div></div>
+    <div class="gallery-item"><div class="img-placeholder"></div></div>
+    <div class="gallery-item"><div class="img-placeholder" style="background:linear-gradient(135deg,#e8d5e5,#d5c0cc,#c8b8c5)"></div></div>
+  </div>
+</section>
+
+<!-- CLASSES -->
+<section id="classes" class="section">
+  <span class="section-label">Classes</span>
+  <h2 class="section-title">Find the style that suits you best</h2>
+  <p class="section-sub">Whether you're seeking calm, energy, or balance, there's a class for every need.</p>
+
+  <div class="classes-grid">
+    <div class="class-card">
+      <div class="class-card-img"><div class="img-placeholder"></div></div>
+      <div class="class-card-body">
+        <h3>Vinyasa Yoga</h3>
+        <p>Build strength and flexibility with movement linked to breath.</p>
+        <a href="#contact" class="link-rose">Book a class →</a>
+      </div>
+    </div>
+    <div class="class-card">
+      <div class="class-card-img"><div class="img-placeholder" style="background:linear-gradient(135deg,#d5dce8,#c0c8d5,#b8bdc8)"></div></div>
+      <div class="class-card-body">
+        <h3>Ashtanga Yoga</h3>
+        <p>Follow a fixed sequence for discipline, endurance, and inner focus.</p>
+        <a href="#contact" class="link-rose">Book a class →</a>
+      </div>
+    </div>
+    <div class="class-card">
+      <div class="class-card-img"><div class="img-placeholder" style="background:linear-gradient(135deg,#dde8d5,#ccd5c0,#bec8b8)"></div></div>
+      <div class="class-card-body">
+        <h3>Yin Yoga</h3>
+        <p>Slow-paced, meditative practice targeting deep connective tissue.</p>
+        <a href="#contact" class="link-rose">Book a class →</a>
+      </div>
+    </div>
+    <div class="class-card">
+      <div class="class-card-img"><div class="img-placeholder" style="background:linear-gradient(135deg,#e8ddd5,#d5ccc0,#c8beb8)"></div></div>
+      <div class="class-card-body">
+        <h3>Restorative Yoga</h3>
+        <p>Gentle, supported poses to promote deep relaxation and recovery.</p>
+        <a href="#contact" class="link-rose">Book a class →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section id="benefits" class="section">
+  <span class="section-label">Benefits</span>
+  <h2 class="section-title">Why practice yoga?</h2>
+  <p class="section-sub">Beyond the mat, yoga offers life-changing benefits — both on and off the mat.</p>
+
+  <div class="benefits-grid">
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      </div>
+      <h3>Flexibility &amp; Mobility</h3>
+      <p>Gain a wider range of motion and ease in daily movement.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h3>Strength &amp; Posture</h3>
+      <p>Tone your muscles while building a solid, balanced posture.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <h3>Stress Relief</h3>
+      <p>Calm your nervous system and find lasting mental clarity.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3>Better Sleep</h3>
+      <p>Regular practice improves sleep quality and recovery time.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Community &amp; Connection</h3>
+      <p>Find your tribe in a welcoming, supportive community.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      </div>
+      <h3>Mindfulness</h3>
+      <p>Develop present-moment awareness that carries into daily life.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="section">
+  <span class="section-label">Testimonials</span>
+  <h2 class="section-title">What our students say</h2>
+  <p class="section-sub">Real stories from people who've transformed their practice with us.</p>
+
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"I've tried many studios but Asana truly feels like home. The instructors are attentive and the community is so warm."</p>
+      <span class="testimonial-author">— Sofia M.</span>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"The online classes are just as immersive as in-studio. I've noticed huge improvements in my flexibility and mood."</p>
+      <span class="testimonial-author">— Lena K.</span>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"As a complete beginner I was nervous, but the team made me feel so welcome. I'm now practicing four times a week!"</p>
+      <span class="testimonial-author">— Marco T.</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section">
+  <span class="section-label">Memberships</span>
+  <h2 class="section-title">Find the right rhythm for your practice</h2>
+  <p class="section-sub">Choose from flexible plans designed for every lifestyle, whether you're just starting or flowing daily.</p>
+
+  <div class="pricing-grid">
+    <!-- Starter -->
+    <div class="price-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price">€39<span>/month</span></div>
+      <div class="plan-desc">Perfect for beginners or occasional practice.</div>
+      <ul class="plan-features">
+        <li>1 class per week</li>
+        <li>All class types</li>
+        <li>Community events</li>
+      </ul>
+      <a href="#contact" class="btn-pill outline" style="width:100%;text-align:center;display:block">Get Started</a>
+    </div>
+    <!-- Essential (Popular) -->
+    <div class="price-card popular">
+      <div class="popular-badge">Popular</div>
+      <div class="plan-name">Essential</div>
+      <div class="plan-price">€69<span>/month</span></div>
+      <div class="plan-desc">Ideal balance of flexibility and commitment.</div>
+      <ul class="plan-features">
+        <li>Everything in Starter</li>
+        <li>3 classes per week</li>
+        <li>Priority booking</li>
+        <li>1 guest pass /month</li>
+      </ul>
+      <a href="#contact" class="btn-pill" style="width:100%;text-align:center;display:block">Join Now</a>
+    </div>
+    <!-- Unlimited -->
+    <div class="price-card">
+      <div class="plan-name">Unlimited</div>
+      <div class="plan-price">€99<span>/month</span></div>
+      <div class="plan-desc">For dedicated practitioners.</div>
+      <ul class="plan-features">
+        <li>Everything in Essential</li>
+        <li>Unlimited weekly classes</li>
+        <li>Free workshops &amp; events</li>
+        <li>One-on-one intro session</li>
+      </ul>
+      <a href="#contact" class="btn-pill outline" style="width:100%;text-align:center;display:block">Start Unlimited</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section">
+  <div class="faq-layout">
+    <div class="faq-intro">
+      <span class="section-label" style="text-align:left">FAQ</span>
+      <h2>Got Questions?</h2>
+      <p>Find answers to the most common questions about classes, memberships, and more.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q">
+          What should I bring to class?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Just bring a yoga mat, a water bottle, and comfortable clothing. We provide blocks and straps if needed.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          I'm a complete beginner, is that okay?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Absolutely! All our classes are designed to be accessible to beginners. Our instructors will offer modifications so you can work at your own pace.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Do I need to book classes in advance?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">We recommend booking in advance as classes can fill up, especially on weekends. You can book online or through our app up to 7 days ahead.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Can I pause or cancel my membership anytime?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Yes. You can pause your membership for up to 2 months per year, or cancel with 30 days' notice. No penalties or hidden fees.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Are there online classes available?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Yes! All membership plans include access to our live-streamed and on-demand online library, so you can practice from anywhere.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Can I try a class before subscribing?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Of course! We offer a free first class for new students. Just book through the contact form and let us know it's your first time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="contact-layout">
+    <div class="contact-info">
+      <span class="section-label" style="text-align:left">Contact</span>
+      <h2>Ready to begin your journey?</h2>
+      <p>Fill out the form and we'll get back to you within 24 hours to confirm your class booking or answer any questions.</p>
+      <a href="#pricing" class="btn-pill outline">View Memberships</a>
+    </div>
+    <div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" placeholder="Jane Smith"/>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="jane@example.com"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Which class are you interested in?</label>
+          <select>
+            <option value="" disabled selected>Select...</option>
+            <option>Vinyasa Yoga</option>
+            <option>Ashtanga Yoga</option>
+            <option>Yin Yoga</option>
+            <option>Restorative Yoga</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Your message..."></textarea>
+        </div>
+        <button class="btn-pill btn-full" onclick="handleSubmit(event)">Send your message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Asana</div>
+  <nav class="footer-links">
+    <a href="#classes">Classes</a>
+    <a href="#benefits">Benefits</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="footer-copy">© 2026 Asana Yoga Studio. All rights reserved.</div>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.class-card, .benefit, .testimonial, .price-card, .feature').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target;
+    btn.textContent = 'Message sent ✓';
+    btn.style.background = '#7eaa86';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Send your message';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+  }
+</script>
+</body>
+</html>
