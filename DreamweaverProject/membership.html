@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Memberships — Asana Yoga Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:       #c97b7b;
+      --rose-light: #e8a9a9;
+      --rose-pale:  #f5dede;
+      --rose-xpale: #fdf0f0;
+      --cream:      #fdf8f6;
+      --warm-white: #fefcfb;
+      --dark:       #1a1a1a;
+      --mid:        #5a5a5a;
+      --light:      #999;
+      --border:     #ede8e5;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--warm-white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+      background: rgba(253,248,246,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--serif); font-size: 20px; font-weight: 500;
+      color: var(--dark); text-decoration: none; letter-spacing: 0.02em;
+    }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; color: var(--mid); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--dark); }
+    .nav-links a.active { color: var(--rose); font-weight: 500; }
+    .btn-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 22px; background: var(--rose); color: #fff;
+      border: none; border-radius: 100px;
+      font-family: var(--sans); font-size: 13px; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-pill:hover { background: #b86d6d; transform: translateY(-1px); }
+    .btn-pill.outline {
+      background: transparent; color: var(--rose);
+      border: 1.5px solid var(--rose);
+    }
+    .btn-pill.outline:hover { background: var(--rose); color: #fff; }
+    .btn-pill.white {
+      background: #fff; color: var(--rose);
+    }
+    .btn-pill.white:hover { background: var(--rose-pale); }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      margin-top: 64px;
+      padding: 80px 48px 70px;
+      text-align: center;
+      background: linear-gradient(160deg, var(--rose-xpale) 0%, var(--warm-white) 60%);
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 320px; height: 320px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,123,123,0.08) 0%, transparent 70%);
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute; bottom: -80px; left: -40px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,123,123,0.06) 0%, transparent 70%);
+    }
+    .breadcrumb {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 12px; color: var(--light); margin-bottom: 20px;
+    }
+    .breadcrumb a { color: var(--light); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--rose); }
+    .breadcrumb span { opacity: 0.5; }
+    .page-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 300; line-height: 1.15;
+      margin-bottom: 16px; color: var(--dark);
+    }
+    .page-hero p {
+      font-size: 15px; color: var(--mid); line-height: 1.7;
+      max-width: 520px; margin: 0 auto 28px;
+    }
+    .hero-pills {
+      display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+    }
+    .tag-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 100px;
+      background: #fff; border: 1px solid var(--border);
+      font-size: 12px; color: var(--mid);
+    }
+    .tag-pill svg { width: 13px; height: 13px; stroke: var(--rose); fill: none; stroke-width: 2; }
+
+    /* ─── SECTION ─── */
+    .section { padding: 80px 48px; }
+    .section-label {
+      display: block; text-align: center;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--light); margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 300; line-height: 1.2;
+      text-align: center; color: var(--dark); margin-bottom: 10px;
+    }
+    .section-sub {
+      text-align: center; font-size: 13.5px; color: var(--mid);
+      max-width: 480px; margin: 0 auto 52px; line-height: 1.7;
+    }
+
+    /* ─── COMPARE TOGGLE ─── */
+    .toggle-wrap {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; margin-bottom: 48px;
+    }
+    .toggle-label { font-size: 13px; color: var(--mid); }
+    .toggle-label.active { color: var(--dark); font-weight: 500; }
+    .save-badge {
+      font-size: 10.5px; font-weight: 500; color: var(--rose);
+      background: var(--rose-pale); padding: 3px 10px; border-radius: 100px;
+    }
+    .toggle {
+      width: 44px; height: 24px; background: var(--rose);
+      border-radius: 100px; position: relative; cursor: pointer;
+      border: none; transition: background 0.3s; flex-shrink: 0;
+    }
+    .toggle::after {
+      content: '';
+      position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px; background: #fff;
+      border-radius: 50%; transition: transform 0.3s;
+    }
+    .toggle.annual::after { transform: translateX(20px); }
+
+    /* ─── PRICING CARDS ─── */
+    #plans { background: var(--cream); }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; max-width: 960px; margin: 0 auto;
+      align-items: start;
+    }
+    .price-card {
+      background: #fff; border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 32px 26px 26px;
+      position: relative;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .price-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.07); }
+    .price-card.popular {
+      border-color: var(--rose-light);
+      box-shadow: 0 4px 28px rgba(201,123,123,0.13);
+      padding-top: 40px;
+    }
+    .popular-badge {
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: var(--rose); color: #fff;
+      font-size: 10.5px; font-weight: 500; letter-spacing: 0.06em;
+      padding: 4px 16px; border-radius: 100px;
+      white-space: nowrap;
+    }
+    .plan-name { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+    .plan-tagline { font-size: 12px; color: var(--light); margin-bottom: 20px; line-height: 1.5; }
+    .plan-price-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
+    .plan-price {
+      font-family: var(--serif);
+      font-size: 44px; font-weight: 300; line-height: 1;
+    }
+    .plan-price-unit { font-size: 14px; color: var(--mid); }
+    .plan-price-annual {
+      font-size: 11.5px; color: var(--rose); background: var(--rose-pale);
+      padding: 2px 9px; border-radius: 100px; display: none; margin-bottom: 6px;
+    }
+    .annual-active .plan-price-annual { display: inline-block; }
+    .plan-divider { height: 1px; background: var(--border); margin: 18px 0; }
+    .plan-section-label {
+      font-size: 10.5px; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--light); margin-bottom: 12px;
+    }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .plan-features li {
+      font-size: 13px; color: var(--mid);
+      display: flex; align-items: flex-start; gap: 9px; line-height: 1.4;
+    }
+    .check {
+      flex-shrink: 0; width: 16px; height: 16px; margin-top: 1px;
+      background: var(--rose-pale); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .check svg { width: 8px; height: 8px; stroke: var(--rose); fill: none; stroke-width: 2.5; }
+    .cross {
+      flex-shrink: 0; width: 16px; height: 16px; margin-top: 1px;
+      background: #f4f4f4; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cross svg { width: 8px; height: 8px; stroke: #bbb; fill: none; stroke-width: 2.5; }
+    .plan-cta { width: 100%; padding: 13px; font-size: 13.5px; border-radius: 12px; }
+
+    /* ─── COMPARISON TABLE ─── */
+    #compare { background: var(--warm-white); }
+    .compare-table {
+      max-width: 860px; margin: 0 auto;
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .compare-table table { width: 100%; border-collapse: collapse; }
+    .compare-table th {
+      padding: 18px 20px; font-size: 13px; font-weight: 500;
+      background: var(--cream); text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table th:first-child { text-align: left; width: 35%; }
+    .compare-table th.highlight { color: var(--rose); }
+    .compare-table td {
+      padding: 14px 20px; font-size: 13px; color: var(--mid);
+      border-bottom: 1px solid var(--border); text-align: center;
+    }
+    .compare-table td:first-child { text-align: left; color: var(--dark); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: var(--rose-xpale); }
+    .compare-table .cat-row td {
+      background: var(--cream); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--light);
+      padding: 10px 20px;
+    }
+    .tick { color: var(--rose); font-size: 15px; }
+    .dash { color: #ddd; font-size: 18px; }
+
+    /* ─── HOW IT WORKS ─── */
+    #how { background: var(--cream); }
+    .steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; max-width: 900px; margin: 0 auto;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute; top: 28px; left: 12.5%; right: 12.5%;
+      height: 1px; background: var(--border); z-index: 0;
+    }
+    .step {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; padding: 0 16px; gap: 14px;
+      position: relative; z-index: 1;
+    }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: #fff; border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 22px; font-weight: 400;
+      color: var(--rose);
+    }
+    .step h3 { font-size: 13.5px; font-weight: 500; }
+    .step p  { font-size: 12.5px; color: var(--mid); line-height: 1.6; }
+
+    /* ─── PERKS ─── */
+    #perks { background: var(--warm-white); }
+    .perks-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; max-width: 860px; margin: 0 auto;
+    }
+    .perk {
+      background: var(--cream); border-radius: 16px;
+      padding: 28px 24px;
+      border: 1px solid var(--border);
+      transition: transform 0.2s;
+    }
+    .perk:hover { transform: translateY(-3px); }
+    .perk-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--rose-pale);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .perk-icon svg { width: 20px; height: 20px; stroke: var(--rose); fill: none; stroke-width: 1.5; }
+    .perk h3 { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+    .perk p  { font-size: 12.5px; color: var(--mid); line-height: 1.6; }
+
+    /* ─── FAQ ─── */
+    #faq { background: var(--cream); }
+    .faq-layout {
+      display: grid; grid-template-columns: 1fr 2fr;
+      gap: 60px; max-width: 860px; margin: 0 auto;
+    }
+    .faq-intro h2 {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 300; line-height: 1.2; margin-bottom: 14px;
+    }
+    .faq-intro p { font-size: 13px; color: var(--mid); line-height: 1.7; margin-bottom: 24px; }
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 0; background: none; border: none; cursor: pointer;
+      font-family: var(--sans); font-size: 13.5px; font-weight: 400;
+      color: var(--dark); text-align: left; gap: 16px;
+    }
+    .faq-q svg {
+      width: 16px; height: 16px; stroke: var(--mid); fill: none;
+      stroke-width: 2; flex-shrink: 0; transition: transform 0.3s;
+    }
+    .faq-item.open .faq-q svg { transform: rotate(180deg); }
+    .faq-a {
+      font-size: 13px; color: var(--mid); line-height: 1.7;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.3s;
+    }
+    .faq-item.open .faq-a { max-height: 200px; padding-bottom: 16px; }
+
+    /* ─── CTA BANNER ─── */
+    #cta {
+      background: var(--dark); padding: 80px 48px; text-align: center;
+    }
+    #cta h2 {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 300; color: #fff; margin-bottom: 14px;
+    }
+    #cta p { font-size: 14px; color: rgba(255,255,255,0.55); max-width: 440px; margin: 0 auto 32px; line-height: 1.7; }
+    .cta-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #111; color: rgba(255,255,255,0.5);
+      padding: 40px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .footer-logo { font-family: var(--serif); font-size: 20px; color: #fff; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 12.5px; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 12px; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.6s ease forwards; }
+    .delay-1 { animation-delay: 0.1s; opacity: 0; }
+    .delay-2 { animation-delay: 0.2s; opacity: 0; }
+    .delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .section, .page-hero { padding: 60px 20px; }
+      .pricing-grid, .perks-grid, .faq-layout { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .steps::before { display: none; }
+      .compare-table { overflow-x: auto; display: block; }
+      footer { padding: 32px 20px; }
+      #cta { padding: 60px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Asana</a>
+  <ul class="nav-links">
+    <li><a href="index.html#classes">Classes</a></li>
+    <li><a href="index.html#gallery">Gallery</a></li>
+    <li><a href="index.html#benefits">Benefits</a></li>
+    <li><a href="membership.html" class="active">Memberships</a></li>
+    <li><a href="index.html#faq">FAQ</a></li>
+  </ul>
+  <a href="index.html#contact" class="btn-pill">Book a Class</a>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span>›</span>
+    <span>Memberships</span>
+  </div>
+  <h1 class="fade-up">Find your perfect plan</h1>
+  <p class="fade-up delay-1">Flexible memberships built around your lifestyle — whether you're just beginning or deepening a daily practice.</p>
+  <div class="hero-pills fade-up delay-2">
+    <span class="tag-pill">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      No joining fee
+    </span>
+    <span class="tag-pill">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Cancel anytime
+    </span>
+    <span class="tag-pill">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      In-studio &amp; online
+    </span>
+    <span class="tag-pill">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      First class free
+    </span>
+  </div>
+</div>
+
+<!-- PLANS -->
+<section id="plans" class="section">
+  <span class="section-label">Memberships</span>
+  <h2 class="section-title">Choose what works for you</h2>
+  <p class="section-sub">All plans include access to our full class library. Upgrade or downgrade at any time.</p>
+
+  <!-- Billing toggle -->
+  <div class="toggle-wrap">
+    <span class="toggle-label active" id="lbl-monthly">Monthly</span>
+    <button class="toggle" id="billing-toggle" aria-label="Toggle billing period"></button>
+    <span class="toggle-label" id="lbl-annual">Annual <span class="save-badge">Save 20%</span></span>
+  </div>
+
+  <div class="pricing-grid" id="pricing-grid">
+
+    <!-- STARTER -->
+    <div class="price-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-tagline">Perfect for beginners or those who prefer a gentle, occasional practice.</div>
+      <div class="plan-price-row">
+        <div class="plan-price" data-monthly="39" data-annual="31">€39</div>
+        <div class="plan-price-unit">/month</div>
+      </div>
+      <div class="plan-price-annual">Billed €372/year</div>
+
+      <div class="plan-divider"></div>
+      <div class="plan-section-label">What's included</div>
+      <ul class="plan-features">
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>1 class per week (in-studio or online)</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Access to all class types</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Community events &amp; workshops</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>On-demand class library (basic)</li>
+        <li><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span style="color:#bbb">Priority booking</span></li>
+        <li><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span style="color:#bbb">Guest passes</span></li>
+        <li><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span style="color:#bbb">Intro coaching session</span></li>
+      </ul>
+      <a href="index.html#contact" class="btn-pill outline plan-cta">Get Started</a>
+    </div>
+
+    <!-- ESSENTIAL (Popular) -->
+    <div class="price-card popular">
+      <div class="popular-badge">Most Popular</div>
+      <div class="plan-name">Essential</div>
+      <div class="plan-tagline">The ideal balance of flexibility, commitment, and community.</div>
+      <div class="plan-price-row">
+        <div class="plan-price" data-monthly="69" data-annual="55">€69</div>
+        <div class="plan-price-unit">/month</div>
+      </div>
+      <div class="plan-price-annual">Billed €660/year</div>
+
+      <div class="plan-divider"></div>
+      <div class="plan-section-label">Everything in Starter, plus</div>
+      <ul class="plan-features">
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>3 classes per week</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Priority booking (48hr advance)</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>1 guest pass per month</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Full on-demand library access</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Member discounts on retail</li>
+        <li><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span style="color:#bbb">Free workshops &amp; events</span></li>
+        <li><span class="cross"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span style="color:#bbb">Intro coaching session</span></li>
+      </ul>
+      <a href="index.html#contact" class="btn-pill plan-cta">Join Now</a>
+    </div>
+
+    <!-- UNLIMITED -->
+    <div class="price-card">
+      <div class="plan-name">Unlimited</div>
+      <div class="plan-tagline">For dedicated practitioners who want to go deeper in every dimension.</div>
+      <div class="plan-price-row">
+        <div class="plan-price" data-monthly="99" data-annual="79">€99</div>
+        <div class="plan-price-unit">/month</div>
+      </div>
+      <div class="plan-price-annual">Billed €948/year</div>
+
+      <div class="plan-divider"></div>
+      <div class="plan-section-label">Everything in Essential, plus</div>
+      <ul class="plan-features">
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Unlimited weekly classes</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Free workshops &amp; special events</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>One-on-one intro coaching session</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>2 guest passes per month</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Early access to new classes</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Quarterly progress check-ins</li>
+        <li><span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Priority waitlist for retreats</li>
+      </ul>
+      <a href="index.html#contact" class="btn-pill outline plan-cta">Start Unlimited</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section id="compare" class="section">
+  <span class="section-label">Compare</span>
+  <h2 class="section-title">Side-by-side comparison</h2>
+  <p class="section-sub">Everything you need to know to pick the plan that's right for you.</p>
+
+  <div class="compare-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Starter</th>
+          <th class="highlight">Essential</th>
+          <th>Unlimited</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="cat-row"><td colspan="4">Classes</td></tr>
+        <tr><td>Classes per week</td><td>1</td><td>3</td><td>Unlimited</td></tr>
+        <tr><td>In-studio access</td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+        <tr><td>Online / live-streamed</td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+        <tr><td>On-demand library</td><td>Basic</td><td>Full</td><td>Full</td></tr>
+        <tr><td>Early access to new classes</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="tick">✓</span></td></tr>
+
+        <tr class="cat-row"><td colspan="4">Booking &amp; Passes</td></tr>
+        <tr><td>Standard booking window</td><td>7 days</td><td>7 days</td><td>7 days</td></tr>
+        <tr><td>Priority booking (48hr)</td><td><span class="dash">—</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+        <tr><td>Guest passes per month</td><td><span class="dash">—</span></td><td>1</td><td>2</td></tr>
+
+        <tr class="cat-row"><td colspan="4">Events &amp; Extras</td></tr>
+        <tr><td>Community events</td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+        <tr><td>Free workshops &amp; special events</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="tick">✓</span></td></tr>
+        <tr><td>Retreat waitlist priority</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="tick">✓</span></td></tr>
+        <tr><td>Member retail discounts</td><td><span class="dash">—</span></td><td><span class="tick">✓</span></td><td><span class="tick">✓</span></td></tr>
+
+        <tr class="cat-row"><td colspan="4">Coaching</td></tr>
+        <tr><td>Intro coaching session</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="tick">✓</span></td></tr>
+        <tr><td>Quarterly progress check-ins</td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="tick">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="section">
+  <span class="section-label">Process</span>
+  <h2 class="section-title">How to get started</h2>
+  <p class="section-sub">Up and on the mat in minutes.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Choose your plan</h3>
+      <p>Pick the membership that matches your goals and schedule.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Book your first class</h3>
+      <p>Browse our schedule and reserve your spot — your first class is free.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Meet your instructor</h3>
+      <p>Arrive 10 minutes early and we'll take care of the rest.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3>Begin your practice</h3>
+      <p>Flow, breathe, and reconnect. Welcome to Asana.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBER PERKS -->
+<section id="perks" class="section">
+  <span class="section-label">Perks</span>
+  <h2 class="section-title">More than just classes</h2>
+  <p class="section-sub">Every membership comes with benefits that extend beyond the studio.</p>
+
+  <div class="perks-grid">
+    <div class="perk">
+      <div class="perk-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>Pause anytime</h3>
+      <p>Life happens. Pause your membership for up to 2 months per year at no extra cost.</p>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Bring a friend</h3>
+      <p>Essential and Unlimited members receive monthly guest passes to share the practice.</p>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>Stream anywhere</h3>
+      <p>Access live and on-demand classes from your phone, tablet, or laptop — anytime.</p>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </div>
+      <h3>Flexible scheduling</h3>
+      <p>Morning, midday, or evening — we have classes throughout the week to fit your life.</p>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h3>Welcoming community</h3>
+      <p>Join a warm, non-judgmental space where every body and every level is celebrated.</p>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h3>No hidden fees</h3>
+      <p>The price you see is the price you pay. No joining fees, no surprise charges.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section">
+  <div class="faq-layout">
+    <div class="faq-intro">
+      <span class="section-label" style="text-align:left">FAQ</span>
+      <h2>Membership questions</h2>
+      <p>Everything you need to know before signing up.</p>
+      <a href="index.html#contact" class="btn-pill outline" style="margin-top:8px">Contact us</a>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q">Is there a minimum commitment period?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">No. All our memberships are month-to-month with no lock-in period. You can cancel with 30 days' notice at any time.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I switch plans after signing up?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What happens to unused classes?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Unused classes do not roll over to the next month. We encourage you to book ahead so you never miss a session!</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I use my membership at partner studios?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Currently memberships are valid at our studio locations and online. We're working on partner studio access and will announce it soon.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you offer family or corporate memberships?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Yes! We offer special rates for families and corporate wellness programs. Reach out through our contact form for a custom quote.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is there a student or concession discount?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">We offer a 15% discount for students and seniors on any plan. Just mention it when you get in touch and we'll apply it to your account.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section id="cta">
+  <h2>Still not sure? Try a class first.</h2>
+  <p>Your first class is completely free — no card required. Come in, breathe, and see how it feels.</p>
+  <div class="cta-btns">
+    <a href="index.html#contact" class="btn-pill white">Book a free class</a>
+    <a href="#plans" class="btn-pill outline" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.7)">View plans</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Asana</div>
+  <nav class="footer-links">
+    <a href="index.html#classes">Classes</a>
+    <a href="index.html#benefits">Benefits</a>
+    <a href="membership.html">Pricing</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <div class="footer-copy">© 2026 Asana Yoga Studio. All rights reserved.</div>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Billing toggle
+  const toggle = document.getElementById('billing-toggle');
+  const lblMonthly = document.getElementById('lbl-monthly');
+  const lblAnnual  = document.getElementById('lbl-annual');
+  const grid = document.getElementById('pricing-grid');
+  let isAnnual = false;
+
+  toggle.addEventListener('click', () => {
+    isAnnual = !isAnnual;
+    toggle.classList.toggle('annual', isAnnual);
+    lblMonthly.classList.toggle('active', !isAnnual);
+    lblAnnual.classList.toggle('active', isAnnual);
+    grid.classList.toggle('annual-active', isAnnual);
+
+    document.querySelectorAll('.plan-price').forEach(el => {
+      const monthly = el.dataset.monthly;
+      const annual  = el.dataset.annual;
+      el.textContent = '€' + (isAnnual ? annual : monthly);
+    });
+
+    // Update annual billing line
+    const annualAmounts = [372, 660, 948];
+    const monthlyAmounts = [39, 69, 99];
+    document.querySelectorAll('.plan-price-annual').forEach((el, i) => {
+      el.textContent = isAnnual
+        ? `Billed €${annualAmounts[i]}/year`
+        : `Billed €${monthlyAmounts[i] * 12}/year`;
+    });
+  });
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.price-card, .perk, .step').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
