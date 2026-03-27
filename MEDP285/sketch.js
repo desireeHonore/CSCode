@@ -16,8 +16,8 @@ function setup() {
 
 function draw() {
   //replaced previous redVal + greenVal lines to transition back to a night sky
-  redVal = sin(frameCount * 0.01) * 110 + 110;
-  greenVal = sin(frameCount * 0.01) * 30 + 30;
+  redVal = cos(frameCount * 0.01) * 110 + 110;
+  greenVal = cos(frameCount * 0.01) * 30 + 30;
 
   background(redVal, greenVal, 0);
 
