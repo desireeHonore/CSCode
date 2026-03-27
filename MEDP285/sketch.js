@@ -1,6 +1,7 @@
 //declaring additional variables
-let x = 300, y = 350;
-let xSpeed = 3, ySpeed = -2;
+let x = 300;
+let y = 350;
+let xSpeed = 2, ySpeed = -1;
 let size = 90;
 let isGrowing = true;
 let redVal = 0, greenVal = 0;
