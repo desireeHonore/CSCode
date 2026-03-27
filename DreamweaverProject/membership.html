@@ -442,9 +442,9 @@
 
   <!-- Billing toggle -->
   <div class="toggle-wrap">
-    <span class="toggle-label active" id="lbl-monthly">Monthly</span>
+    <span class="toggle-label active" id="-monthly">Monthly</span>
     <button class="toggle" id="billing-toggle" aria-label="Toggle billing period"></button>
-    <span class="toggle-label" id="lbl-annual">Annual <span class="save-badge">Save 20%</span></span>
+    <span class="toggle-label" id="-annual">Annual <span class="save-badge">Save 20%</span></span>
   </div>
 
   <div class="pricing-grid" id="pricing-grid">
@@ -703,8 +703,8 @@
 
 <!-- CTA BANNER -->
 <section id="cta">
-  <h2>Still not sure? Try a class first.</h2>
-  <p>Your first class is completely free — no card required. Come in, breathe, and see how it feels.</p>
+  <h2>Still not sure? Book without a membership.</h2>
+  <p>Your first service is 20% off — no membership required. Come in, breathe, and see how it feels.</p>
   <div class="cta-btns">
     <a href="index.html#contact" class="btn-pill white">Book a free class</a>
     <a href="#plans" class="btn-pill outline" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.7)">View plans</a>
@@ -713,14 +713,14 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Asana</div>
+  <div class="footer-logo">TDC</div>
   <nav class="footer-links">
-    <a href="index.html#classes">Classes</a>
+    <a href="index.html#classes">Services</a>
     <a href="index.html#benefits">Benefits</a>
     <a href="membership.html">Pricing</a>
     <a href="index.html#contact">Contact</a>
   </nav>
-  <div class="footer-copy">© 2026 Asana Yoga Studio. All rights reserved.</div>
+  <div class="footer-copy">© 2026 The Desired Collective. All rights reserved.</div>
 </footer>
 
 <script>
@@ -736,16 +736,16 @@
 
   // Billing toggle
   const toggle = document.getElementById('billing-toggle');
-  const lblMonthly = document.getElementById('lbl-monthly');
-  const lblAnnual  = document.getElementById('lbl-annual');
+  const Monthly = document.getElementById('-monthly');
+  const Annual  = document.getElementById('-annual');
   const grid = document.getElementById('pricing-grid');
   let isAnnual = false;
 
   toggle.addEventListener('click', () => {
     isAnnual = !isAnnual;
     toggle.classList.toggle('annual', isAnnual);
-    lblMonthly.classList.toggle('active', !isAnnual);
-    lblAnnual.classList.toggle('active', isAnnual);
+    Monthly.classList.toggle('active', !isAnnual);
+    Annual.classList.toggle('active', isAnnual);
     grid.classList.toggle('annual-active', isAnnual);
 
     document.querySelectorAll('.plan-price').forEach(el => {
@@ -759,8 +759,8 @@
     const monthlyAmounts = [39, 69, 99];
     document.querySelectorAll('.plan-price-annual').forEach((el, i) => {
       el.textContent = isAnnual
-        ? `Billed €${annualAmounts[i]}/year`
-        : `Billed €${monthlyAmounts[i] * 12}/year`;
+        ? `Billed ${annualAmounts[i]}/year`
+        : `Billed ${monthlyAmounts[i] * 12}/year`;
     });
   });
 
