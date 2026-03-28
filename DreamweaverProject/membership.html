@@ -750,7 +750,7 @@
     document.querySelectorAll('.plan-price').forEach(el => {
       const monthly = el.dataset.monthly;
       const annual  = el.dataset.annual;
-      el.textContent = '€' + (isAnnual ? annual : monthly);
+      el.textContent = '$' + (isAnnual ? annual : monthly);
     });
 
     // Update annual billing line
