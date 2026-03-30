@@ -73,7 +73,7 @@
     }
     .btn-pill.outline:hover { background: var(--rose); color: #fff; }
 
-    /* ─── HERO ─── */
+    /* ─── HERO/HEADER PHOTO ─── */
     #hero {
       position: relative;
       margin-top: 64px;
@@ -99,7 +99,7 @@
       position: absolute; inset: 0;
       background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
     }
-    /* Placeholder silhouette figures */
+    /* Placeholder silhouette figures - temporary, will be replaced with actual images */
     .hero-figures {
       position: absolute; inset: 0;
       display: flex; align-items: flex-end; justify-content: center;
@@ -225,7 +225,7 @@
     }
     .link-rose:hover { opacity: 0.7; }
 
-    /* ─── BENEFITS ─── */
+    /* ─── BENEFITS SECTION ─── */
     #benefits { background: var(--warm-white); }
     .benefits-grid {
       display: grid;
@@ -241,7 +241,7 @@
     .benefit h3 { font-size: 14px; font-weight: 500; }
     .benefit p  { font-size: 12.5px; color: var(--mid); line-height: 1.6; }
 
-    /* ─── TESTIMONIALS ─── */
+    /* ─── REVIEWS/TESTIMONIALS ─── */
     #testimonials { background: var(--cream); }
     .testimonials-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -256,7 +256,7 @@
     .testimonial p { font-size: 13px; color: var(--mid); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
     .testimonial-author { font-size: 12.5px; font-weight: 500; color: var(--dark); }
 
-    /* ─── PRICING ─── */
+    /* ─── PRICING SECTION ─── */
     #pricing { background: var(--warm-white); }
     .pricing-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -337,7 +337,7 @@
     }
     .faq-item.open .faq-a { max-height: 200px; padding-bottom: 16px; }
 
-    /* ─── CONTACT ─── */
+    /* ─── PROFESSIONALS CONTACT FORM ─── */
     #contact { background: var(--warm-white); }
     .contact-layout {
       display: grid; grid-template-columns: 1fr 1fr;
@@ -390,7 +390,7 @@
     .footer-links a:hover { color: #333333; }
     .footer-copy { font-size: 12px; }
 
-    /* ─── GALLERY STRIP ─── */
+    /* ─── GALLERY/IMAGE STRIP ─── */
     #gallery { background: var(--cream); padding: 60px 0; overflow: hidden; }
     .gallery-strip {
       display: flex; gap: 16px; padding: 0 48px;
@@ -424,7 +424,7 @@
     .gallery-item:nth-child(4) .img-placeholder { background: linear-gradient(135deg, #dde8d5 0%, #ccd5c0 60%, #bec8b8 100%); }
     .gallery-item:nth-child(5) .img-placeholder { background: linear-gradient(135deg, #e8d5e0 0%, #d5c0cc 60%, #c8b8c0 100%); }
 
-    /* responsive */
+    /* putitng all sections to work together */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
@@ -440,26 +440,27 @@
 </head>
 <body>
 
-<!-- NAV -->
+<!-- HTML -->
 <nav>
   <a href="#" class="nav-logo">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 0v10m0 0l-4-4m4 4l4-4"/>
     </svg>
-    Asana
+    TDC
   </a>
+  <!-- temporary nav links -->
   <ul class="nav-links">
-    <li><a href="#classes">Service</a></li>
-    <li><a href="#gallery">Bookings</a></li>
-    <li><a href="#benefits">Pricing</a></li>
-    <li><a href="#testimonials">Professionals</a></li>
-    <li><a href="#pricing">Memberships</a></li>
+    <li><a href="#services">Service</a></li>
+    <li><a href="#bookings">Bookings</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#professionals">Professionals</a></li>
+    <li><a href="#memberships">Memberships</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
-  <a href="#contact" class="btn-pill">Book a Service</a>
+  <a href="#bookings" class="btn-pill">Book a Service</a>
 </nav>
 
-<!-- HERO -->
+<!-- HERO / First Heading Section -->
 <section id="hero">
   <div class="hero-bg"></div>
   <div class="hero-figures"></div>
@@ -472,7 +473,7 @@
   </div>
 </section>
 
-<!-- INTRO -->
+<!-- INTRO SECTION -->
 <section id="intro" class="section">
   <span class="section-label">Introduction</span>
   <h2 class="section-title">Reimagining your wellness and beauty</h2>
@@ -483,16 +484,17 @@
       <img src="image1.svg" alt="Beauty Service" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block;" />
     </div>
     <div class="intro-img" style="position:relative; overflow:hidden;">
+  <!-- VIDEO -->
   <video autoplay muted loop playsinline
     style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block;">
     <source src="video1.mp4" type="video/mp4">
-    Your browser does not support the video tag.
   </video>
+
 </div>
     <div class="intro-img" style="position:relative; overflow:hidden;">
       <img src="image3.svg" alt="Skin Care" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block;" />
     </div>
-  </div>
+</div>
 
   <div class="intro-features">
     <div class="feature">
@@ -554,7 +556,7 @@
   </div>
 </section>
 
-<!-- CLASSES -->
+<!-- SERVICES / temporarily under 'classes' clas, will change later -->
 <section id="classes" class="section">
   <span class="section-label">Services</span>
   <h2 class="section-title">Everything You Need, All in One Place</h2>
@@ -606,7 +608,7 @@
 </div>
 </section>
 
-<!-- BENEFITS -->
+<!-- BENEFITS SECTION -->
 <section id="benefits" class="section">
   <span class="section-label">Benefits</span>
   <h2 class="section-title">More Than a Membership — It's a Movement</h2>
@@ -658,7 +660,7 @@
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- TESTIMONIALS / REVIEWS -->
 <section id="testimonials" class="section">
   <span class="section-label">Testimonials</span>
   <h2 class="section-title">What our members say</h2>
@@ -686,7 +688,7 @@
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- PRICING SECTION -->
 <section id="pricing" class="section">
   <span class="section-label">Memberships</span>
   <h2 class="section-title">Find the right rhythm for your routine.</h2>
@@ -739,7 +741,7 @@
   </div>
 </section>
 
-<!-- FAQ -->
+<!-- FAQ SECTION -->
 <section id="faq" class="section">
   <div class="faq-layout">
     <div class="faq-intro">
@@ -798,7 +800,7 @@
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- CONTACT SECTION-->
 <section id="contact" class="section">
   <div class="contact-layout">
     <div class="contact-info">
@@ -850,7 +852,7 @@
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER (aka Header)-->
 <footer>
   <div class="footer-logo">The Desired Collective</div>
   <nav class="footer-links">
@@ -863,7 +865,7 @@
 </footer>
 
 <script>
-  // FAQ accordion
+  // FAQ drop down questions
   document.querySelectorAll('.faq-q').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.parentElement;
@@ -873,7 +875,7 @@
     });
   });
 
-  // Scroll fade-in
+  // Scroll fade-in (love this)
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -890,7 +892,7 @@
     observer.observe(el);
   });
 
-  // Form submit
+  // Form submit...turns to green confirmation (love this!)
   function handleSubmit(e) {
     e.preventDefault();
     const btn = e.target;
