@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book a Service — TDC | The Desired Collective</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* Booking layout */
+    .booking-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 32px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Step indicator */
+    .booking-steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 36px;
+      max-width: 960px;
+      margin-left: auto; margin-right: auto;
+    }
+    .bstep {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12.5px; color: var(--light);
+    }
+    .bstep-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--cream); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 500; color: var(--light);
+      transition: all 0.2s;
+    }
+    .bstep.active .bstep-num { background: var(--rose); border-color: var(--rose); color: #fff; }
+    .bstep.active { color: var(--dark); font-weight: 500; }
+    .bstep.done .bstep-num { background: var(--rose-pale); border-color: var(--rose-light); color: var(--rose); }
+    .bstep-line {
+      flex: 1; height: 1px; background: var(--border);
+      margin: 0 12px; min-width: 32px;
+    }
+
+    /* Service selector */
+    .service-select-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .service-opt {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 16px;
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--sans);
+    }
+    .service-opt:hover,
+    .service-opt.selected {
+      border-color: var(--rose-light);
+      background: var(--rose-xpale);
+    }
+    .service-opt svg {
+      width: 18px; height: 18px;
+      stroke: var(--rose); fill: none; stroke-width: 1.5;
+      flex-shrink: 0;
+    }
+    .service-opt-info h4 { font-size: 13.5px; font-weight: 500; color: var(--dark); }
+    .service-opt-info p  { font-size: 11.5px; color: var(--mid); margin-top: 2px; }
+
+    /* Sub-service list */
+    .sub-services {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 28px;
+    }
+    .sub-service {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 13px 16px;
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--sans);
+    }
+    .sub-service:hover,
+    .sub-service.selected {
+      border-color: var(--rose-light);
+      background: var(--rose-xpale);
+    }
+    .sub-service-left h4 { font-size: 13.5px; font-weight: 400; color: var(--dark); }
+    .sub-service-left p  { font-size: 11.5px; color: var(--light); margin-top: 2px; }
+    .sub-service-right { font-size: 13px; font-weight: 500; color: var(--rose); white-space: nowrap; }
+
+    /* Professional picker */
+    .pro-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .pro-opt {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px;
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pro-opt:hover,
+    .pro-opt.selected {
+      border-color: var(--rose-light);
+      background: var(--rose-xpale);
+    }
+    .pro-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, #e8d5d5, #d5c5c0);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif); font-size: 18px; color: var(--rose);
+    }
+    .pro-opt-info h4 { font-size: 13.5px; font-weight: 500; color: var(--dark); }
+    .pro-opt-info p  { font-size: 11.5px; color: var(--mid); margin-top: 2px; }
+    .pro-rating { font-size: 11.5px; color: var(--rose); margin-left: auto; white-space: nowrap; }
+
+    /* Date & time picker */
+    .date-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px; margin-bottom: 20px;
+    }
+    .date-btn {
+      padding: 10px 6px; border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--cream);
+      text-align: center; cursor: pointer;
+      font-family: var(--sans); transition: all 0.2s;
+    }
+    .date-btn:hover, .date-btn.selected {
+      border-color: var(--rose-light);
+      background: var(--rose-xpale);
+    }
+    .date-btn .day  { font-size: 10.5px; color: var(--light); display: block; margin-bottom: 4px; }
+    .date-btn .num  { font-family: var(--serif); font-size: 20px; color: var(--dark); display: block; line-height: 1; }
+    .date-btn.selected .day,
+    .date-btn.selected .num { color: var(--rose); }
+
+    .time-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 8px; margin-bottom: 28px;
+    }
+    .time-btn {
+      padding: 10px; border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--cream);
+      text-align: center; cursor: pointer;
+      font-family: var(--sans); font-size: 13px; color: var(--mid);
+      transition: all 0.2s;
+    }
+    .time-btn:hover, .time-btn.selected {
+      border-color: var(--rose-light);
+      background: var(--rose-xpale);
+      color: var(--rose);
+    }
+    .time-btn.unavailable {
+      opacity: 0.35; cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Booking section labels */
+    .booking-label {
+      font-size: 12px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--light); margin-bottom: 12px;
+      display: block;
+    }
+
+    /* Summary sidebar */
+    .booking-summary {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      position: sticky;
+      top: 84px;
+      align-self: start;
+    }
+    .booking-summary h3 {
+      font-family: var(--serif);
+      font-size: 20px; font-weight: 400;
+      margin-bottom: 20px; color: var(--dark);
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 12px; padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .summary-row:last-of-type { border-bottom: none; }
+    .summary-row .label { color: var(--light); flex-shrink: 0; }
+    .summary-row .val   { color: var(--dark); font-weight: 400; text-align: right; }
+    .summary-total {
+      display: flex; justify-content: space-between;
+      padding: 16px 0 0; margin-top: 4px;
+      font-size: 14px; font-weight: 500;
+    }
+    .summary-total .val { color: var(--rose); font-family: var(--serif); font-size: 20px; }
+    .summary-note {
+      font-size: 11px; color: var(--light);
+      margin-top: 12px; line-height: 1.6; text-align: center;
+    }
+
+    .section-divider {
+      height: 1px; background: var(--border); margin: 24px 0;
+    }
+
+    @media (max-width: 860px) {
+      .booking-layout { grid-template-columns: 1fr; }
+      .booking-summary { position: static; }
+      .date-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .service-select-grid { grid-template-columns: 1fr; }
+      .date-grid  { grid-template-columns: repeat(3, 1fr); }
+      .time-grid  { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">The Desired Collective</a>
+  <ul class="nav-links">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="professionals.html">Our Team</a></li>
+    <li><a href="membership.html">Membership</a></li>
+    <li><a href="blog.html">Journal</a></li>
+    <li><a href="contact.html">Support</a></li>
+  </ul>
+  <a href="join.html" class="btn-pill">Join Now</a>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>›</span>
+    <span>Book a Service</span>
+  </div>
+  <h1>Book your next appointment</h1>
+  <p>Choose your service, pick your professional, and select a time that works for you — in under two minutes.</p>
+  <div class="hero-pills">
+    <span class="tag-pill">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Instant confirmation
+    </span>
+    <span class="tag-pill">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      Free cancellation up to 12 hrs
+    </span>
+    <span class="tag-pill">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      In-studio or at-home
+    </span>
+  </div>
+</div>
+
+<section class="section bg-cream">
+
+  <!-- Progress indicator -->
+  <div class="booking-steps">
+    <div class="bstep active">
+      <div class="bstep-num">1</div>
+      <span>Service</span>
+    </div>
+    <div class="bstep-line"></div>
+    <div class="bstep">
+      <div class="bstep-num">2</div>
+      <span>Professional</span>
+    </div>
+    <div class="bstep-line"></div>
+    <div class="bstep">
+      <div class="bstep-num">3</div>
+      <span>Date & Time</span>
+    </div>
+    <div class="bstep-line"></div>
+    <div class="bstep">
+      <div class="bstep-num">4</div>
+      <span>Confirm</span>
+    </div>
+  </div>
+
+  <div class="booking-layout">
+
+    <!-- LEFT: Booking form -->
+    <div>
+
+      <!-- STEP 1: Service -->
+      <span class="booking-label">Step 1 — Choose a service category</span>
+      <div class="service-select-grid">
+        <div class="service-opt selected" onclick="selectOpt(this, 'service-cat')">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          <div class="service-opt-info"><h4>Hair</h4><p>Installs, color, cuts & more</p></div>
+        </div>
+        <div class="service-opt" onclick="selectOpt(this, 'service-cat')">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <div class="service-opt-info"><h4>Nails</h4><p>Mani, pedi, gel, acrylic & art</p></div>
+        </div>
+        <div class="service-opt" onclick="selectOpt(this, 'service-cat')">
+          <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          <div class="service-opt-info"><h4>Lashes & Brows</h4><p>Extensions, tint, lamination</p></div>
+        </div>
+        <div class="service-opt" onclick="selectOpt(this, 'service-cat')">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="service-opt-info"><h4>Skin & Wellness</h4><p>Facials, waxing, massage</p></div>
+        </div>
+      </div>
+
+      <!-- Specific service -->
+      <span class="booking-label">Select a specific service</span>
+      <div class="sub-services">
+        <div class="sub-service selected" onclick="selectOpt(this, 'sub-svc')">
+          <div class="sub-service-left"><h4>Sew-in Install</h4><p>Full install with leave-out or closure</p></div>
+          <div class="sub-service-right">Included</div>
+        </div>
+        <div class="sub-service" onclick="selectOpt(this, 'sub-svc')">
+          <div class="sub-service-left"><h4>Silk Press</h4><p>Wash, blow-dry & flat iron</p></div>
+          <div class="sub-service-right">Included</div>
+        </div>
+        <div class="sub-service" onclick="selectOpt(this, 'sub-svc')">
+          <div class="sub-service-left"><h4>Box Braids</h4><p>Knotless, classic, or jumbo</p></div>
+          <div class="sub-service-right">Included</div>
+        </div>
+        <div class="sub-service" onclick="selectOpt(this, 'sub-svc')">
+          <div class="sub-service-left"><h4>Color & Highlights</h4><p>Single process, balayage, or ombre</p></div>
+          <div class="sub-service-right">Add-on</div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- STEP 2: Professional -->
+      <span class="booking-label">Step 2 — Choose your professional</span>
+      <div class="pro-list">
+        <div class="pro-opt selected" onclick="selectOpt(this, 'pro')">
+          <div class="pro-avatar">D</div>
+          <div class="pro-opt-info">
+            <h4>Dominique Carter</h4>
+            <p>Hair Stylist · Brooklyn, NY</p>
+          </div>
+          <div class="pro-rating">★ 4.9</div>
+        </div>
+        <div class="pro-opt" onclick="selectOpt(this, 'pro')">
+          <div class="pro-avatar">M</div>
+          <div class="pro-opt-info">
+            <h4>Marisol Reyes</h4>
+            <p>Hair Stylist · The Bronx, NY</p>
+          </div>
+          <div class="pro-rating">★ 4.8</div>
+        </div>
+        <div class="pro-opt" onclick="selectOpt(this, 'pro')">
+          <div class="pro-avatar">—</div>
+          <div class="pro-opt-info">
+            <h4>No preference</h4>
+            <p>First available professional</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- STEP 3: Date & Time -->
+      <span class="booking-label">Step 3 — Pick a date</span>
+      <div class="date-grid">
+        <div class="date-btn" onclick="selectOpt(this, 'date')"><span class="day">MON</span><span class="num">31</span></div>
+        <div class="date-btn selected" onclick="selectOpt(this, 'date')"><span class="day">TUE</span><span class="num">1</span></div>
+        <div class="date-btn" onclick="selectOpt(this, 'date')"><span class="day">WED</span><span class="num">2</span></div>
+        <div class="date-btn" onclick="selectOpt(this, 'date')"><span class="day">THU</span><span class="num">3</span></div>
+        <div class="date-btn" onclick="selectOpt(this, 'date')"><span class="day">FRI</span><span class="num">4</span></div>
+      </div>
+
+      <span class="booking-label">Select a time</span>
+      <div class="time-grid">
+        <div class="time-btn unavailable">9:00 AM</div>
+        <div class="time-btn" onclick="selectOpt(this, 'time')">10:00 AM</div>
+        <div class="time-btn selected" onclick="selectOpt(this, 'time')">11:00 AM</div>
+        <div class="time-btn" onclick="selectOpt(this, 'time')">12:00 PM</div>
+        <div class="time-btn unavailable">1:00 PM</div>
+        <div class="time-btn" onclick="selectOpt(this, 'time')">2:00 PM</div>
+        <div class="time-btn" onclick="selectOpt(this, 'time')">3:00 PM</div>
+        <div class="time-btn unavailable">4:00 PM</div>
+        <div class="time-btn" onclick="selectOpt(this, 'time')">5:00 PM</div>
+      </div>
+
+      <!-- Location preference -->
+      <span class="booking-label">Location preference</span>
+      <div class="service-select-grid" style="grid-template-columns:1fr 1fr; margin-bottom:0;">
+        <div class="service-opt selected" onclick="selectOpt(this, 'location')">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          <div class="service-opt-info"><h4>In-studio</h4><p>Visit our partner studio</p></div>
+        </div>
+        <div class="service-opt" onclick="selectOpt(this, 'location')">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="service-opt-info"><h4>At-home visit</h4><p>Professional comes to you</p></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Summary sidebar -->
+    <div class="booking-summary">
+      <h3>Booking Summary</h3>
+      <div class="summary-row">
+        <span class="label">Service</span>
+        <span class="val">Sew-in Install</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Professional</span>
+        <span class="val">Dominique Carter</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Date</span>
+        <span class="val">Tuesday, April 1</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Time</span>
+        <span class="val">11:00 AM</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Location</span>
+        <span class="val">In-studio · Brooklyn</span>
+      </div>
+      <div class="summary-row">
+        <span class="label">Duration</span>
+        <span class="val">~2.5 hours</span>
+      </div>
+      <div class="summary-total">
+        <span>Total due</span>
+        <span class="val">Covered ✓</span>
+      </div>
+      <p class="summary-note">Included in your Luxe Glam membership. No payment required at booking.</p>
+      <button class="btn-pill btn-full" style="margin-top:20px;" onclick="handleBooking(event)">Confirm Booking</button>
+      <p class="summary-note" style="margin-top:8px;">Free cancellation up to 12 hours before your appointment.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- NOT A MEMBER -->
+<section class="section bg-warm-white">
+  <div style="max-width:640px; margin:0 auto; text-align:center;">
+    <span class="section-label">Not a Member Yet?</span>
+    <h2 class="section-title">Join TDC to book unlimited services</h2>
+    <p class="section-sub">All bookings through TDC require an active membership. Choose a plan that fits your lifestyle and start booking immediately.</p>
+    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+      <a href="join.html" class="btn-pill btn-lg">Join now</a>
+      <a href="membership.html" class="btn-pill outline btn-lg">View plans</a>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner">
+  <h2>Questions about booking?</h2>
+  <p>Our support team is available 7 days a week to help you schedule, reschedule, or find the right professional.</p>
+  <div class="cta-btns">
+    <a href="contact.html" class="btn-pill white">Contact support</a>
+    <a href="professionals.html" class="btn-pill ghost">Meet our team</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">The Desired Collective</div>
+  <nav class="footer-links">
+    <a href="services.html">Services</a>
+    <a href="professionals.html">Our Team</a>
+    <a href="membership.html">Membership</a>
+    <a href="blog.html">Journal</a>
+    <a href="contact.html">Support</a>
+  </nav>
+  <div class="footer-copy">© 2026 The Desired Collective. All rights reserved.</div>
+</footer>
+
+<script>
+  function selectOpt(el, group) {
+    document.querySelectorAll(`[onclick*="${group}"]`).forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+  function handleBooking(e) {
+    const btn = e.target;
+    btn.textContent = 'Booking confirmed ✓';
+    btn.style.background = '#7eaa86';
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = 'Confirm Booking'; btn.style.background = ''; btn.disabled = false; }, 3000);
+  }
+  const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }), { threshold: 0.08 });
+  document.querySelectorAll('.scroll-fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
