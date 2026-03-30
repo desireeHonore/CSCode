@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Journal — TDC | The Desired Collective</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* Category filter tabs */
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+    }
+    .filter-tab {
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-family: var(--sans);
+      font-size: 12.5px;
+      font-weight: 400;
+      color: var(--mid);
+      background: var(--cream);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-tab:hover,
+    .filter-tab.active {
+      background: var(--rose);
+      color: #fff;
+      border-color: var(--rose);
+    }
+
+    /* Featured post */
+    .featured-post {
+      max-width: 860px;
+      margin: 0 auto 52px;
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .featured-post:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .featured-post-img {
+      background: linear-gradient(135deg, #e8d5d5 0%, #d5c5c0 50%, #c5b5b8 100%);
+      min-height: 300px;
+    }
+    .featured-post-body {
+      padding: 36px 32px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .featured-badge {
+      display: inline-block;
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--rose); background: var(--rose-pale);
+      padding: 3px 10px; border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .featured-post-body h2 {
+      font-family: var(--serif);
+      font-size: 28px; font-weight: 300;
+      line-height: 1.25; color: var(--dark); margin-bottom: 12px;
+    }
+    .featured-post-body p {
+      font-size: 13.5px; color: var(--mid);
+      line-height: 1.7; margin-bottom: 20px;
+    }
+    .blog-meta-row {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 11.5px; color: var(--light); margin-bottom: 14px;
+    }
+    .blog-meta-row .cat {
+      color: var(--rose); font-weight: 500;
+      letter-spacing: 0.05em; text-transform: uppercase; font-size: 10.5px;
+    }
+
+    /* Newsletter strip */
+    .newsletter-strip {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--dark);
+      border-radius: 20px;
+      padding: 40px 36px;
+      text-align: center;
+    }
+    .newsletter-strip h3 {
+      font-family: var(--serif);
+      font-size: 26px; font-weight: 300;
+      color: #fff; margin-bottom: 8px;
+    }
+    .newsletter-strip p {
+      font-size: 13px; color: rgba(255,255,255,0.55);
+      margin-bottom: 22px; line-height: 1.6;
+    }
+    .newsletter-form {
+      display: flex; gap: 8px; max-width: 400px; margin: 0 auto;
+    }
+    .newsletter-form input {
+      flex: 1;
+      font-family: var(--sans); font-size: 13px;
+      padding: 11px 16px; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: #fff; outline: none;
+      transition: border-color 0.2s;
+    }
+    .newsletter-form input::placeholder { color: rgba(255,255,255,0.35); }
+    .newsletter-form input:focus { border-color: var(--rose-light); }
+
+    @media (max-width: 768px) {
+      .featured-post { grid-template-columns: 1fr; }
+      .featured-post-img { min-height: 200px; }
+      .newsletter-form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">The Desired Collective</a>
+  <ul class="nav-links">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="professionals.html">Our Team</a></li>
+    <li><a href="membership.html">Membership</a></li>
+    <li><a href="blog.html" class="active">Journal</a></li>
+    <li><a href="contact.html">Support</a></li>
+  </ul>
+  <a href="join.html" class="btn-pill">Join Now</a>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>›</span>
+    <span>The Journal</span>
+  </div>
+  <h1>The TDC Journal</h1>
+  <p>Beauty tips, wellness insights, style guides, and stories from our community — written for and by the women who make up The Desired Collective.</p>
+</div>
+
+<!-- BLOG -->
+<section class="section bg-cream">
+
+  <!-- Category filters -->
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="filterPosts(this, 'all')">All</button>
+    <button class="filter-tab" onclick="filterPosts(this, 'hair')">Hair</button>
+    <button class="filter-tab" onclick="filterPosts(this, 'nails')">Nails</button>
+    <button class="filter-tab" onclick="filterPosts(this, 'skin')">Skin & Wellness</button>
+    <button class="filter-tab" onclick="filterPosts(this, 'lashes')">Lashes & Brows</button>
+    <button class="filter-tab" onclick="filterPosts(this, 'community')">Community</button>
+  </div>
+
+  <!-- Featured post -->
+  <div class="featured-post scroll-fade">
+    <div class="featured-post-img"></div>
+    <div class="featured-post-body">
+      <span class="featured-badge">✦ Featured</span>
+      <div class="blog-meta-row">
+        <span class="cat">Hair</span>
+        <span>March 20, 2026</span>
+        <span>6 min read</span>
+      </div>
+      <h2>Why Your Protective Style Routine Is More Important Than the Style Itself</h2>
+      <p>The install gets the attention — but it's what you do before and after that determines your hair health. TDC stylist Dominique Carter breaks down the non-negotiables.</p>
+      <a href="#" class="btn-pill outline">Read the article</a>
+    </div>
+  </div>
+
+  <!-- Blog grid -->
+  <div class="cards-grid-3">
+
+    <div class="blog-card scroll-fade" data-cat="nails">
+      <div class="blog-card-img">
+        <div class="img-placeholder" style="background:linear-gradient(135deg,#d5dce8,#c0c8d5,#b8bdc8); width:100%; height:100%;"></div>
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-meta"><span class="cat">Nails</span><span>March 15, 2026</span></div>
+        <h3>Gel vs. Acrylic: What's Actually Better for Your Nails?</h3>
+        <p>Nail tech Kezia Abrams gives us the honest breakdown — including what she recommends for her own clients.</p>
+        <a href="#" class="link-rose">Read more →</a>
+      </div>
+    </div>
+
+    <div class="blog-card scroll-fade" data-cat="skin">
+      <div class="blog-card-img">
+        <div class="img-placeholder" style="background:linear-gradient(135deg,#dde8d5,#ccd5c0,#bec8b8); width:100%; height:100%;"></div>
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-meta"><span class="cat">Skin & Wellness</span><span>March 10, 2026</span></div>
+        <h3>Hyperpigmentation 101: What's Causing It and How to Actually Treat It</h3>
+        <p>Esthetician Yara Osei explains the real causes — and why your skincare routine may be making it worse.</p>
+        <a href="#" class="link-rose">Read more →</a>
+      </div>
+    </div>
+
+    <div class="blog-card scroll-fade" data-cat="community">
+      <div class="blog-card-img">
+        <div class="img-placeholder" style="background:linear-gradient(135deg,#e8ddd5,#d5ccc0,#c8beb8); width:100%; height:100%;"></div>
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-meta"><span class="cat">Community</span><span>March 5, 2026</span></div>
+        <h3>The Real Cost of Beauty: Why We Built TDC</h3>
+        <p>A personal note from our founder on why luxury beauty access matters — and who it's been leaving out.</p>
+        <a href="#" class="link-rose">Read more →</a>
+      </div>
+    </div>
+
+    <div class="blog-card scroll-fade" data-cat="lashes">
+      <div class="blog-card-img">
+        <div class="img-placeholder" style="background:linear-gradient(135deg,#e8d5e5,#d5c0cc,#c8b8c5); width:100%; height:100%;"></div>
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-meta"><span class="cat">Lashes & Brows</span><span>Feb 28, 2026</span></div>
+        <h3>How to Make Your Lash Extensions Last Longer (The Right Way)</h3>
+        <p>Lash tech Tiffany Nguyen shares her top aftercare tips to keep your set full and fresh between refills.</p>
+        <a href="#" class="link-rose">Read more →</a>
+      </div>
+    </div>
+
+    <div class="blog-card scroll-fade" data-cat="hair">
+      <div class="blog-card-img">
+        <div class="img-placeholder" style="background:linear-gradient(135deg,#d5e8e5,#c0d5d2,#b8c8c5); width:100%; height:100%;"></div>
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-meta"><span class="cat">Hair</span><span>Feb 20, 2026</span></div>
+        <h3>Dominican Blowouts: Everything You've Always Wanted to Know</h3>
+        <p>Bronx-based stylist Marisol Reyes shares the technique, the products, and what makes a truly great blowout.</p>
+        <a href="#" class="link-rose">Read more →</a>
+      </div>
+    </div>
+
+    <div class="blog-card scroll-fade" data-cat="skin">
+      <div class="blog-card-img">
+        <div class="img-placeholder" style="background:linear-gradient(135deg,#e8e0d5,#d5ccc0,#c8c0b8); width:100%; height:100%;"></div>
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-meta"><span class="cat">Skin & Wellness</span><span>Feb 14, 2026</span></div>
+        <h3>Why Consistency in Skincare Matters More Than Any Single Product</h3>
+        <p>Building a sustainable routine you'll actually stick to — with help from our in-house esthetician.</p>
+        <a href="#" class="link-rose">Read more →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="section bg-warm-white">
+  <div class="newsletter-strip scroll-fade">
+    <h3>The TDC Weekly</h3>
+    <p>Beauty tips, new articles, member spotlights, and exclusive offers — delivered to your inbox every week. No spam, ever.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="your@email.com"/>
+      <button class="btn-pill" onclick="handleNewsletter(event)">Subscribe</button>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner">
+  <h2>Love what you're reading?</h2>
+  <p>Become a TDC member and get access to exclusive content, events, and the services behind every article.</p>
+  <div class="cta-btns">
+    <a href="join.html" class="btn-pill white">Join the collective</a>
+    <a href="membership.html" class="btn-pill ghost">View plans</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">The Desired Collective</div>
+  <nav class="footer-links">
+    <a href="services.html">Services</a>
+    <a href="professionals.html">Our Team</a>
+    <a href="membership.html">Membership</a>
+    <a href="blog.html">Journal</a>
+    <a href="contact.html">Support</a>
+  </nav>
+  <div class="footer-copy">© 2026 The Desired Collective. All rights reserved.</div>
+</footer>
+
+<script>
+  function filterPosts(btn, cat) {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.blog-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+  function handleNewsletter(e) {
+    e.preventDefault();
+    const btn = e.target;
+    btn.textContent = 'Subscribed ✓';
+    btn.style.background = '#7eaa86';
+    btn.disabled = true;
+  }
+  const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }), { threshold: 0.08 });
+  document.querySelectorAll('.scroll-fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
