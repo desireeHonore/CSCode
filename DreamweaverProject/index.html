@@ -401,6 +401,20 @@
       flex-shrink: 0; width: 220px; height: 280px;
       border-radius: 16px; overflow: hidden;
     }
+
+    .gallery-item {
+      width: 200px;   /* or whatever size your design uses */
+      height: 200px;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .gallery-item:nth-child(even) { margin-top: 24px; }
     .gallery-item .img-placeholder {
       background: linear-gradient(135deg, #e8d5d5 0%, #d5c5c0 60%, #c8b8bb 100%);
