@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luxe Glam — TDC | The Desired Collective</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── Dark gold accent for Luxe page ── */
+    :root {
+      --gold:       #b8962e;
+      --gold-light: #d4b45a;
+      --gold-pale:  #f7f1e0;
+    }
+
+    .page-hero.luxe {
+      background: linear-gradient(160deg, #1a1a1a 0%, #2c2420 60%, #1a1a1a 100%);
+      border-bottom: 1px solid #333;
+    }
+    .page-hero.luxe::before,
+    .page-hero.luxe::after {
+      background: radial-gradient(circle, rgba(184,150,46,0.08) 0%, transparent 70%);
+    }
+    .page-hero.luxe h1 { color: #fff; }
+    .page-hero.luxe p  { color: rgba(255,255,255,0.65); margin-bottom: 28px; }
+    .page-hero.luxe .breadcrumb a,
+    .page-hero.luxe .breadcrumb  { color: rgba(255,255,255,0.35); }
+    .page-hero.luxe .breadcrumb a:hover { color: var(--gold-light); }
+
+    .gold-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: 100px;
+      background: rgba(184,150,46,0.15);
+      border: 1px solid rgba(184,150,46,0.3);
+      font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--gold-light);
+      margin-bottom: 20px;
+    }
+
+    /* Luxe offering cards */
+    .luxe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .luxe-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .luxe-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .luxe-card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--gold-pale);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .luxe-card-icon svg {
+      width: 20px; height: 20px;
+      stroke: var(--gold); fill: none; stroke-width: 1.5;
+    }
+    .luxe-card h3 {
+      font-family: var(--serif);
+      font-size: 19px; font-weight: 400;
+      color: var(--dark); margin-bottom: 8px;
+    }
+    .luxe-card p {
+      font-size: 12.5px; color: var(--mid);
+      line-height: 1.65; margin-bottom: 14px;
+    }
+    .luxe-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .luxe-list li {
+      font-size: 12px; color: var(--mid);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .luxe-list li::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold-light);
+      flex-shrink: 0;
+    }
+
+    /* Perks strip */
+    .perks-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .perk-box {
+      background: var(--cream);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .perk-box svg {
+      width: 24px; height: 24px;
+      stroke: var(--rose); fill: none; stroke-width: 1.5;
+      margin: 0 auto 10px;
+      display: block;
+    }
+    .perk-box h3 { font-size: 13.5px; font-weight: 500; margin-bottom: 6px; }
+    .perk-box p  { font-size: 12px; color: var(--mid); line-height: 1.6; }
+
+    /* Compare row */
+    .compare-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      max-width: 860px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .compare-row > div {
+      padding: 16px 20px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-row > div:last-child { border-bottom: none; }
+    .compare-head {
+      background: var(--cream);
+      font-weight: 500; font-size: 12px;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--light);
+    }
+    .compare-head.active { color: var(--rose); background: var(--rose-xpale); }
+    .compare-tick { text-align: center; }
+    .tick  { color: var(--rose); }
+    .cross { color: #ddd; }
+
+    @media (max-width: 768px) {
+      .luxe-grid   { grid-template-columns: 1fr; }
+      .perks-strip { grid-template-columns: 1fr 1fr; }
+      .compare-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .perks-strip { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">The Desired Collective</a>
+  <ul class="nav-links">
+    <li><a href="services.html">Services</a></li>
+    <li><a href="professionals.html">Our Team</a></li>
+    <li><a href="membership.html">Membership</a></li>
+    <li><a href="luxe.html" class="active">Luxe Glam</a></li>
+    <li><a href="blog.html">Journal</a></li>
+  </ul>
+  <a href="join.html" class="btn-pill">Join Now</a>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero luxe">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><span>›</span>
+    <a href="membership.html">Membership</a><span>›</span>
+    <span>Luxe Glam</span>
+  </div>
+  <div class="gold-badge">
+    ✦ Tier 3 — Our Most Exclusive Plan
+  </div>
+  <h1>Luxe Glam</h1>
+  <p>Unlimited, unrestricted access to every service TDC offers — with priority booking, premium add-ons, and the white-glove experience you deserve.</p>
+  <div class="hero-actions">
+    <a href="join.html" class="btn-pill btn-lg">Join Luxe Glam — $399/mo</a>
+    <a href="membership.html" class="btn-pill ghost btn-lg">Compare all plans</a>
+  </div>
+</div>
+
+<!-- WHAT'S INCLUDED -->
+<section class="section bg-warm-white">
+  <span class="section-label">Everything Included</span>
+  <h2 class="section-title">Your full Luxe Glam experience</h2>
+  <p class="section-sub">Every service, every month — no caps, no restrictions, no compromises.</p>
+
+  <div class="luxe-grid">
+
+    <div class="luxe-card scroll-fade">
+      <div class="luxe-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h3>Hair Services</h3>
+      <p>Full access to all premium hair offerings — installs, protective styles, color, treatments, and more.</p>
+      <ul class="luxe-list">
+        <li>Sew-ins & full installs</li>
+        <li>Silk press & blowouts</li>
+        <li>Braids & protective styles</li>
+        <li>Color, highlights & treatments</li>
+        <li>Haircuts & trims</li>
+        <li>Wash & go styling</li>
+      </ul>
+    </div>
+
+    <div class="luxe-card scroll-fade">
+      <div class="luxe-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <h3>Nail Services</h3>
+      <p>Every nail service available — from classic manicures to full custom sets, included with no upcharge.</p>
+      <ul class="luxe-list">
+        <li>Manicures & pedicures</li>
+        <li>Gel & acrylic sets</li>
+        <li>Nail art & custom designs</li>
+        <li>Foot scrubs & soaks</li>
+        <li>Dip powder & builder gel</li>
+      </ul>
+    </div>
+
+    <div class="luxe-card scroll-fade">
+      <div class="luxe-card-icon">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      </div>
+      <h3>Eye Services</h3>
+      <p>Full lash sets, unlimited refills, and complete brow services — eyes always on point.</p>
+      <ul class="luxe-list">
+        <li>Full lash extension sets</li>
+        <li>Complimentary refills</li>
+        <li>Eyebrow wax & threading</li>
+        <li>Brow tint & lamination</li>
+        <li>Brow shaping & mapping</li>
+      </ul>
+    </div>
+
+    <div class="luxe-card scroll-fade">
+      <div class="luxe-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h3>Skin & Facials</h3>
+      <p>Regular facials, skin consultations, and treatments to keep your glow consistent all year long.</p>
+      <ul class="luxe-list">
+        <li>Express & signature facials</li>
+        <li>Deep cleansing treatments</li>
+        <li>Brightening & glow facials</li>
+        <li>Personalized skin consultations</li>
+        <li>LED & hydrating treatments</li>
+      </ul>
+    </div>
+
+    <div class="luxe-card scroll-fade">
+      <div class="luxe-card-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>Body & Waxing</h3>
+      <p>Full-body waxing and body treatments — smooth, polished, and always ready.</p>
+      <ul class="luxe-list">
+        <li>Full body waxing</li>
+        <li>Brazilian & bikini wax</li>
+        <li>Body scrubs & wraps</li>
+        <li>Underarm & leg waxing</li>
+      </ul>
+    </div>
+
+    <div class="luxe-card scroll-fade">
+      <div class="luxe-card-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      </div>
+      <h3>Makeup & More</h3>
+      <p>Glam applications, special event makeup, and wellness extras that round out your full self-care routine.</p>
+      <ul class="luxe-list">
+        <li>Full glam makeup application</li>
+        <li>Special event & editorial looks</li>
+        <li>Makeup lessons (1-on-1)</li>
+        <li>Massage therapy sessions</li>
+        <li>Aromatherapy add-ons</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- VIP PERKS -->
+<section class="section bg-cream">
+  <span class="section-label">VIP Perks</span>
+  <h2 class="section-title">The extras that make Luxe, Luxe</h2>
+  <p class="section-sub">Beyond the services — exclusive benefits reserved only for Tier 3 members.</p>
+
+  <div class="perks-strip">
+    <div class="perk-box scroll-fade">
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <h3>Priority Booking</h3>
+      <p>First access to all appointment slots before they open to other tiers.</p>
+    </div>
+    <div class="perk-box scroll-fade">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      <h3>2 Guest Passes / Month</h3>
+      <p>Bring a friend to experience TDC at no additional cost — twice a month.</p>
+    </div>
+    <div class="perk-box scroll-fade">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      <h3>20% Off All Add-ons</h3>
+      <p>Every premium add-on service is automatically discounted for Luxe members.</p>
+    </div>
+    <div class="perk-box scroll-fade">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <h3>Early Event Access</h3>
+      <p>First invitations to TDC pop-ups, brand events, and exclusive member nights.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="section bg-warm-white">
+  <span class="section-label">Compare</span>
+  <h2 class="section-title">How Luxe Glam stacks up</h2>
+  <p class="section-sub">See exactly what sets Tier 3 apart.</p>
+
+  <div class="compare-row">
+    <div class="compare-head">Feature</div>
+    <div class="compare-head">Essence</div>
+    <div class="compare-head">Radiance</div>
+    <div class="compare-head active">Luxe Glam ✦</div>
+
+    <div>Unlimited appointments</div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+
+    <div>Nail services</div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+
+    <div>Hair services</div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+
+    <div>Lash extensions</div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+
+    <div>Full glam makeup</div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+
+    <div>Body waxing</div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+
+    <div>Massage therapy</div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+
+    <div>Priority booking</div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick"><span class="tick">✓</span></div>
+
+    <div>Guest passes / month</div>
+    <div class="compare-tick"><span class="cross">—</span></div>
+    <div class="compare-tick">1</div>
+    <div class="compare-tick">2</div>
+
+    <div>Add-on discount</div>
+    <div class="compare-tick">10%</div>
+    <div class="compare-tick">15%</div>
+    <div class="compare-tick">20%</div>
+
+    <div>Monthly price</div>
+    <div class="compare-tick">$99</div>
+    <div class="compare-tick">$189</div>
+    <div class="compare-tick" style="color:var(--rose);font-weight:500;">$399</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section bg-cream">
+  <div class="faq-layout">
+    <div class="faq-intro">
+      <span class="section-label left">FAQ</span>
+      <h2>Luxe Glam questions</h2>
+      <p>Everything you need to know before upgrading to our most premium tier.</p>
+      <a href="contact.html" class="btn-pill outline mt-16">Contact support</a>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q">Is there really no limit on appointments?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Yes — Luxe Glam members can book as many appointments as their schedule allows within each month, across any covered service category. Book as often as you need.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I use guest passes for any service?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Guest passes cover standard services in the Essence tier. Your guest will experience the quality of TDC at no cost to them or you.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What qualifies as a premium add-on?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Premium add-ons include services like extended massage upgrades, specialty nail art, editorial makeup looks, and luxury hair treatments. Your 20% discount applies automatically at checkout.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I downgrade from Luxe Glam?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Absolutely. You can switch to any lower tier at the end of your billing cycle, no penalties. We only ask for 7 days' notice before your renewal date.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How does priority booking work?
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a">Luxe Glam members get 48-hour early access to all new appointment slots before they're released to Essence and Radiance members — ensuring you always get your preferred time and professional.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner">
+  <h2>You deserve the full experience.</h2>
+  <p>Join Luxe Glam today and never compromise on your self-care again.</p>
+  <div class="cta-btns">
+    <a href="join.html" class="btn-pill white btn-lg">Join Luxe Glam</a>
+    <a href="membership.html" class="btn-pill ghost">See all plans</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">The Desired Collective</div>
+  <nav class="footer-links">
+    <a href="services.html">Services</a>
+    <a href="professionals.html">Our Team</a>
+    <a href="membership.html">Membership</a>
+    <a href="blog.html">Journal</a>
+    <a href="contact.html">Support</a>
+  </nav>
+  <div class="footer-copy">© 2026 The Desired Collective. All rights reserved.</div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+  const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }), { threshold: 0.08 });
+  document.querySelectorAll('.scroll-fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
