@@ -1,0 +1,35 @@
+<html>
+ <head>
+   <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+ </head>
+ <body>
+   <a-scene>
+     <a-assets>
+       <img id="street" src="street.glb">
+       <img id="blossoms" src="blossoms.glb">
+       <!-- Add asset here -->
+       <a-asset-item
+         id="character"
+         src="girl.glb"></a-asset-item>
+     </a-assets>
+
+
+     <a-sky src="#street"></a-sky>
+     <a-plane
+       src="#blossoms"
+       rotation="-90 0 0"
+       width="20"
+       height="20"></a-plane>
+     <a-text
+       value="SUP?"
+       color="#FFD500"
+       align="center"
+       position="0 3 -4"></a-text>
+     <!-- Add entity here: -->
+     <a-glb-model
+       src="#character"
+       position="0 2 -4"
+       scale="0.5 0.5 0.5"></a-glb-model>
+   </a-scene>
+ </body>
+</html>
