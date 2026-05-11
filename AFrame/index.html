@@ -1,32 +1,63 @@
 <html>
- <head>
-   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
- </head>
- <body>
-   <a-scene>
-     <a-assets>
-       <img id="sky" src="Assests/img/scream.jpg">
-       <img id="blossoms" src="Assests/models/blossoms.glb">
-       <a-asset-item
-         id="character"
-         src="girl.glb"></a-asset-item>
-     </a-assets>
+  <head>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <img id="sky" src="Assets/img/scream.jpg">
+        <a-asset-item id="blossoms" src="Assets/models/blossoms.glb"></a-asset-item>
+        <a-asset-item id="character" src="girl.glb"></a-asset-item>
+        <audio id="ambient" src="Assets/audio/ambient.mp3" preload="auto"></audio>
+      </a-assets>
 
-     <a-sky src="#sky"></a-sky>
-     <a-plane
-       src="#blossoms"
-       rotation="-90 0 0"
-       width="20"
-       height="20"></a-plane>
-     <a-text
-       value="SUP?"
-       color="#FFD500"
-       align="center"
-       position="0 3 -4"></a-text>
-     <a-glb-model
-       src="#character"
-       position="0 2 -4"
-       scale="0.5 0.5 0.5"></a-glb-model>
-   </a-scene>
- </body>
+      <a-sky src="#sky"></a-sky>
+      <a-gltf-model src="#blossoms" rotation="-90 0 0" position="0 0 0"></a-gltf-model>
+      <a-gltf-model src="#character" position="0 0 -4" scale="0.5 0.5 0.5"></a-gltf-model>
+
+      <a-torus
+        position="0 2 -4"
+        radius="1.2"
+        radius-tubular="0.04"
+        color="#FFD500"
+        rotation="80 0 0"
+        animation="property: rotation; to: 260 360 0; loop: true; dur: 4000; easing: linear">
+      </a-torus>
+
+      <a-torus
+        position="0 2 -4"
+        radius="1.6"
+        radius-tubular="0.03"
+        color="#FF69B4"
+        rotation="30 0 90"
+        animation="property: rotation; to: 30 360 90; loop: true; dur: 6000; easing: linear">
+      </a-torus>
+
+      <a-torusKnot
+        position="0 4.5 -4"
+        radius="0.4"
+        radius-tubular="0.08"
+        color="#AA44FF"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear">
+      </a-torusKnot>
+
+      <a-light type="ambient" color="#222244" intensity="0.6"></a-light>
+      <a-light type="point" color="#FFD500" intensity="1.5" position="0 3 -3"></a-light>
+      <a-light type="point" color="#FF4488" intensity="1.0" position="-3 2 -4"></a-light>
+      <a-light type="point" color="#4488FF" intensity="1.0" position="3 2 -4"></a-light>
+      <a-text
+        value="SUP?"
+        color="#FFD500"
+        align="center"
+        position="0 5.5 -4"
+        scale="2 2 2">
+      </a-text>
+
+      <a-entity
+        position="0 2 -4"
+        sound="src: #ambient; autoplay: true; loop: true; positional: true; refDistance: 3; maxDistance: 20">
+      </a-entity>
+
+    </a-scene>
+  </body>
 </html>
