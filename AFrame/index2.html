@@ -1186,4 +1186,403 @@ function drawRoomB(canvas) {
     ctx.beginPath();
     ctx.ellipse(w*0.45, h*0.65, w*0.25, h*0.08, 0, 0, Math.PI*2);
     ctx.fill();
-    // Table
+    // Table cloth
+    ctx.fillStyle='#e8d8b0';
+    ctx.beginPath();
+    ctx.ellipse(w*0.45, h*0.63, w*0.22, h*0.07, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // Food items on table
+    // Stack of flatbreads (chapati)
+    ctx.fillStyle='#d4a060';
+    for (let i = 3; i >= 0; i--) {
+      ctx.beginPath();
+      ctx.ellipse(w*0.38, h*0.61-i*h*0.008, w*0.07, h*0.02, 0, 0, Math.PI*2);
+      ctx.fillStyle = i%2===0 ? '#c89050' : '#d4a060';
+      ctx.fill();
+    }
+    // Bowl with food
+    ctx.beginPath();
+    ctx.ellipse(w*0.5, h*0.62, w*0.05, h*0.025, 0, 0, Math.PI*2);
+    ctx.fillStyle='#c8a040'; ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(w*0.5, h*0.618, w*0.04, h*0.018, 0, 0, Math.PI*2);
+    ctx.fillStyle='#8a4020'; ctx.fill();
+    // Steam
+    for (let i = 0; i < 3; i++) {
+      const sx = w*0.48 + i*w*0.01;
+      const sy = h*0.59 - ((t*0.8 + i*20) % (h*0.1));
+      ctx.beginPath();
+      ctx.moveTo(sx, h*0.59);
+      ctx.quadraticCurveTo(sx+w*0.01, sy+h*0.03, sx, sy);
+      ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=1.5; ctx.stroke();
+    }
+    // Cups (metal)
+    [w*0.34, w*0.42, w*0.53, w*0.6].forEach(cx => {
+      ctx.fillStyle='#c0c0c0';
+      ctx.fillRect(cx-w*0.012, h*0.62, w*0.024, h*0.04);
+    });
+
+    // ── FIGURE: FATHER (left) ──
+    const fatherSway = Math.sin(t*0.03) * 0.05;
+    drawPerson(ctx, w*0.15, h*0.38, h, '#808080', '#d4a070', '#3a2010', false, fatherSway, true, 'M');
+
+    // ── FIGURE: SON (center-left) ──
+    const sonHead = Math.sin(t*0.08)*h*0.01;
+    drawPerson(ctx, w*0.33, h*0.42+sonHead, h*0.8, '#5080c0', '#d4956a', '#1a1010', false, 0, false, 'C');
+
+    // ── FIGURE: MOTHER (center-right, sari) ──
+    const momSway = Math.sin(t*0.025+1) * 0.04;
+    drawPersonSari(ctx, w*0.6, h*0.38, h, '#c04040', '#d4a070', '#1a1010', momSway);
+
+    // ── FIGURE: DAUGHTER (right) ──
+    const dgtSway = Math.sin(t*0.07)*0.06;
+    drawPerson(ctx, w*0.77, h*0.44, h*0.78, '#e090a0', '#d4956a', '#1a1010', false, dgtSway, false, 'C');
+
+    drawXRayOverlay(ctx,w,h);
+
+    // X-ray scan beam
+    const scanY = (t * 1.2) % (h + 20) - 10;
+    const scanGrad = ctx.createLinearGradient(0, scanY-6, 0, scanY+6);
+    scanGrad.addColorStop(0,'rgba(0,255,255,0)');
+    scanGrad.addColorStop(0.5,'rgba(0,255,255,0.4)');
+    scanGrad.addColorStop(1,'rgba(0,255,255,0)');
+    ctx.fillStyle = scanGrad;
+    ctx.fillRect(0, scanY-6, w, 12);
+
+    t++;
+    animFrame = requestAnimationFrame(frame);
+  }
+
+  function drawPerson(ctx, x, y, h, shirtColor, skinColor, hairColor, isFemale, sway, isTall, type) {
+    const scale = isTall ? 1 : (type === 'C' ? 0.75 : 1);
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(sway);
+    const hs = h * scale;
+    // body
+    ctx.fillStyle = shirtColor;
+    ctx.fillRect(-hs*0.06, -hs*0.07, hs*0.12, hs*0.22);
+    // head
+    ctx.beginPath();
+    ctx.arc(0, -hs*0.12, hs*0.07, 0, Math.PI*2);
+    ctx.fillStyle = skinColor; ctx.fill();
+    // hair
+    ctx.beginPath();
+    ctx.arc(0, -hs*0.155, hs*0.06, Math.PI, 0);
+    ctx.fillStyle = hairColor; ctx.fill();
+    // legs
+    const ls = Math.sin(t*0.05)*hs*0.02;
+    ctx.fillStyle='#404040';
+    ctx.fillRect(-hs*0.05, hs*0.15, hs*0.04, hs*0.18+ls);
+    ctx.fillRect(hs*0.01, hs*0.15, hs*0.04, hs*0.18-ls);
+    ctx.restore();
+  }
+
+  function drawPersonSari(ctx, x, y, h, sariColor, skinColor, hairColor, sway) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(sway);
+    // sari drape
+    ctx.beginPath();
+    ctx.moveTo(-h*0.07, -h*0.05);
+    ctx.lineTo(h*0.07, -h*0.05);
+    ctx.lineTo(h*0.09, h*0.32);
+    ctx.lineTo(-h*0.09, h*0.32);
+    ctx.closePath();
+    ctx.fillStyle = sariColor; ctx.fill();
+    // blouse
+    ctx.fillStyle = '#e08060';
+    ctx.fillRect(-h*0.05, -h*0.07, h*0.1, h*0.12);
+    // head
+    ctx.beginPath();
+    ctx.arc(0, -h*0.12, h*0.065, 0, Math.PI*2);
+    ctx.fillStyle = skinColor; ctx.fill();
+    // bun
+    ctx.beginPath();
+    ctx.arc(h*0.03, -h*0.16, h*0.04, 0, Math.PI*2);
+    ctx.fillStyle = hairColor; ctx.fill();
+    // flower in hair
+    ctx.beginPath();
+    ctx.arc(h*0.05, -h*0.18, h*0.015, 0, Math.PI*2);
+    ctx.fillStyle = 'white'; ctx.fill();
+    // plate serving motion
+    const armLift = Math.sin(t*0.05)*h*0.02;
+    ctx.fillStyle='#e08060';
+    ctx.fillRect(-h*0.1, -h*0.04-armLift, h*0.05, h*0.015);
+    ctx.beginPath();
+    ctx.ellipse(-h*0.12, -h*0.04-armLift, h*0.04, h*0.01, 0, 0, Math.PI*2);
+    ctx.fillStyle='#c8a040'; ctx.fill();
+    ctx.restore();
+  }
+
+  frame();
+}
+
+/* ═══════════════════════════════════════════════════
+   ROOM C — CHILD GAMING
+════════════════════════════════════════════════════ */
+function drawRoomC(canvas) {
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+
+  function frame() {
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+
+    // Background — dark blue/purple (night, screen glow)
+    const bgGrad = ctx.createLinearGradient(0,0,0,h);
+    bgGrad.addColorStop(0,'#05030a');
+    bgGrad.addColorStop(1,'#03020a');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0,0,w,h);
+
+    // Screen glow (blue/purple from TV)
+    const screenX = w*0.55, screenY = h*0.35;
+    const screenGlow = ctx.createRadialGradient(screenX, screenY, 0, screenX, screenY, w*0.5);
+    screenGlow.addColorStop(0,'rgba(80,100,255,0.35)');
+    screenGlow.addColorStop(1,'rgba(80,100,255,0)');
+    ctx.fillStyle = screenGlow;
+    ctx.fillRect(0,0,w,h);
+
+    drawWallOutline(ctx,w,h,'#080510');
+
+    // Blinds/window (dark, night)
+    ctx.fillStyle='#05030a';
+    ctx.fillRect(w*0.05, h*0.08, w*0.2, h*0.22);
+    for (let i = 0; i < 8; i++) {
+      ctx.fillStyle='rgba(80,100,200,0.05)';
+      ctx.fillRect(w*0.05, h*0.08 + i*h*0.028, w*0.2, h*0.01);
+      ctx.strokeStyle='#1a1530'; ctx.lineWidth=0.5;
+      ctx.beginPath();
+      ctx.moveTo(w*0.05, h*0.08 + i*h*0.028);
+      ctx.lineTo(w*0.25, h*0.08 + i*h*0.028);
+      ctx.stroke();
+    }
+    ctx.strokeStyle='#3a3060'; ctx.lineWidth=2;
+    ctx.strokeRect(w*0.05, h*0.08, w*0.2, h*0.22);
+
+    // Posters on wall
+    ctx.fillStyle='#1a1030';
+    ctx.fillRect(w*0.3, h*0.06, w*0.08, h*0.12);
+    ctx.fillStyle='#cc2020';
+    ctx.fillText && (() => {
+      ctx.font=`${h*0.02}px monospace`;
+      ctx.fillStyle='#cc3030';
+      ctx.fillText('ROBO', w*0.31, h*0.1);
+      ctx.fillText('KNIGHT', w*0.31, h*0.125);
+    })();
+
+    ctx.fillStyle='#101828';
+    ctx.fillRect(w*0.68, h*0.06, w*0.1, h*0.14);
+    ctx.fillStyle='#4080ff'; ctx.font=`${h*0.02}px monospace`;
+    ctx.fillText('GAME', w*0.69, h*0.11);
+    ctx.fillText('POSTER', w*0.685, h*0.13);
+
+    // TV / Monitor stand
+    ctx.fillStyle='#1a1530';
+    ctx.fillRect(w*0.38, h*0.65, w*0.34, h*0.08);
+
+    // TV SCREEN (animated game)
+    const tvX = w*0.4, tvY = h*0.1, tvW = w*0.3, tvH = h*0.55;
+    ctx.fillStyle='#000';
+    ctx.fillRect(tvX, tvY, tvW, tvH);
+
+    // Game screen content (pixel platformer feel)
+    const gameGrad = ctx.createLinearGradient(tvX, tvY, tvX, tvY+tvH);
+    gameGrad.addColorStop(0,'#000a30');
+    gameGrad.addColorStop(0.6,'#001060');
+    gameGrad.addColorStop(1,'#0a1a40');
+    ctx.fillStyle = gameGrad;
+    ctx.fillRect(tvX+2, tvY+2, tvW-4, tvH-4);
+
+    // Game sky/clouds
+    ctx.fillStyle='rgba(150,180,255,0.15)';
+    for (let i = 0; i < 3; i++) {
+      const cx = tvX + ((t*0.5 + i*tvW/3) % tvW);
+      ctx.beginPath();
+      ctx.arc(cx, tvY + tvH*0.15 + i*tvH*0.05, tvW*0.05, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    // Game platform
+    ctx.fillStyle='#3a6030';
+    ctx.fillRect(tvX+4, tvY+tvH*0.75, tvW-8, h*0.015);
+    // Platform blocks
+    for (let i = 0; i < 6; i++) {
+      ctx.fillStyle = i%2===0 ? '#3a6030' : '#2a4820';
+      ctx.fillRect(tvX + i*tvW/6, tvY+tvH*0.55, tvW/8, tvH*0.06);
+    }
+
+    // Game character (pixel hero)
+    const heroX = tvX + tvW*0.3 + Math.sin(t*0.05)*tvW*0.15;
+    const heroY = tvY + tvH*0.7;
+    const heroJump = Math.abs(Math.sin(t*0.07))*tvH*0.1;
+    ctx.fillStyle='#80c0ff';
+    ctx.fillRect(heroX, heroY-heroJump, tvW*0.05, tvH*0.08);
+    ctx.fillStyle='#e0c080';
+    ctx.fillRect(heroX+tvW*0.005, heroY-heroJump-tvH*0.05, tvW*0.04, tvH*0.05);
+    // Enemy
+    ctx.fillStyle='#ff4040';
+    const enemyX = tvX + tvW*0.7 + Math.sin(t*0.04+2)*tvW*0.1;
+    ctx.fillRect(enemyX, tvY+tvH*0.72, tvW*0.05, tvH*0.06);
+    // Score
+    ctx.fillStyle='#ffff80';
+    ctx.font=`bold ${tvH*0.04}px monospace`;
+    ctx.fillText(`SCORE: ${Math.floor(t*3)}`, tvX+8, tvY+tvH*0.06);
+    // Hearts
+    for (let i = 0; i < 3; i++) {
+      ctx.fillStyle = i < 2 ? '#ff4080' : '#404040';
+      ctx.fillText('♥', tvX + tvW - 30 + (i-3)*14, tvY+tvH*0.07);
+    }
+
+    // TV border
+    ctx.strokeStyle='#2a2050'; ctx.lineWidth=4;
+    ctx.strokeRect(tvX, tvY, tvW, tvH);
+    // Screen reflection/glare
+    ctx.fillStyle='rgba(150,150,255,0.04)';
+    ctx.beginPath();
+    ctx.moveTo(tvX+tvW*0.7, tvY+4);
+    ctx.lineTo(tvX+tvW-4, tvY+4);
+    ctx.lineTo(tvX+tvW-4, tvY+tvH*0.3);
+    ctx.closePath();
+    ctx.fill();
+
+    // Shelf with figures
+    ctx.fillStyle='#1a1530';
+    ctx.fillRect(w*0.38, h*0.08, w*0.34, h*0.02);
+    // Figurines
+    for (let i = 0; i < 5; i++) {
+      const fx = w*0.4 + i*w*0.06;
+      ctx.fillStyle=`hsl(${i*60+t}deg,60%,35%)`;
+      ctx.fillRect(fx, h*0.04, w*0.02, h*0.04);
+      ctx.beginPath();
+      ctx.arc(fx+w*0.01, h*0.036, w*0.01, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    // Snack bowl (popcorn)
+    ctx.fillStyle='#2a1a05';
+    ctx.beginPath();
+    ctx.ellipse(w*0.2, h*0.82, w*0.06, h*0.025, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#f0d060';
+    for (let i = 0; i < 6; i++) {
+      ctx.beginPath();
+      ctx.arc(w*0.18 + i*w*0.007, h*0.806, w*0.008, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    // ── CHILD FIGURE (sitting cross-legged, facing screen) ──
+    const childX = w*0.25;
+    const childY = h*0.72;
+    const excite = Math.sin(t*0.1)*h*0.005; // excited head bob
+    ctx.save();
+    ctx.translate(childX, childY);
+
+    // Cross-legged body
+    ctx.fillStyle='#c04040'; // red shirt
+    ctx.fillRect(-w*0.06, -h*0.08, w*0.12, h*0.14);
+
+    // Legs cross-legged (simplified)
+    ctx.fillStyle='#2a3a60';
+    ctx.beginPath();
+    ctx.moveTo(-w*0.08, h*0.06);
+    ctx.lineTo(w*0.08, h*0.06);
+    ctx.lineTo(w*0.12, h*0.14);
+    ctx.lineTo(w*0.06, h*0.16);
+    ctx.lineTo(0, h*0.12);
+    ctx.lineTo(-w*0.06, h*0.16);
+    ctx.lineTo(-w*0.12, h*0.14);
+    ctx.closePath();
+    ctx.fill();
+
+    // Head
+    ctx.beginPath();
+    ctx.arc(0, -h*0.13+excite, h*0.07, 0, Math.PI*2);
+    ctx.fillStyle='#d4956a'; ctx.fill();
+
+    // Wild hair
+    ctx.fillStyle='#1a1010';
+    ctx.beginPath();
+    ctx.arc(-h*0.03, -h*0.17+excite, h*0.055, Math.PI*0.8, Math.PI*2.2);
+    ctx.fill();
+    // Spike hair
+    ctx.beginPath();
+    ctx.moveTo(-h*0.02, -h*0.19+excite);
+    ctx.lineTo(0, -h*0.23+excite);
+    ctx.lineTo(h*0.02, -h*0.19+excite);
+    ctx.fillStyle='#1a1010'; ctx.fill();
+
+    // Eyes (wide, screen-reflected)
+    ctx.fillStyle='white';
+    ctx.beginPath(); ctx.arc(-h*0.025, -h*0.13+excite, h*0.025, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(h*0.025, -h*0.13+excite, h*0.025, 0, Math.PI*2); ctx.fill();
+    // Pupils following screen
+    ctx.fillStyle='#4080ff';
+    ctx.beginPath(); ctx.arc(-h*0.022, -h*0.13+excite, h*0.012, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(h*0.028, -h*0.13+excite, h*0.012, 0, Math.PI*2); ctx.fill();
+    // Screen reflection in eyes
+    ctx.fillStyle='rgba(80,120,255,0.4)';
+    ctx.beginPath(); ctx.arc(-h*0.02, -h*0.135+excite, h*0.008, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(h*0.03, -h*0.135+excite, h*0.008, 0, Math.PI*2); ctx.fill();
+
+    // Controller
+    ctx.fillStyle='#1a1020';
+    ctx.fillRect(-w*0.055, -h*0.005, w*0.11, h*0.04);
+    ctx.fillStyle='#cc2020';
+    ctx.beginPath(); ctx.arc(w*0.04, h*0.008, h*0.008, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle='#2020cc';
+    ctx.beginPath(); ctx.arc(w*0.05, -h*0.002, h*0.007, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle='#c0c0c0';
+    ctx.beginPath(); ctx.arc(-w*0.03, h*0.01, h*0.009, 0, Math.PI*2); ctx.fill();
+
+    // Arms holding controller
+    ctx.fillStyle='#c04040';
+    ctx.fillRect(-w*0.08, -h*0.01, w*0.03, h*0.025);
+    ctx.fillRect(w*0.05, -h*0.01, w*0.03, h*0.025);
+
+    ctx.restore();
+
+    // Blue glow on child's face from screen
+    const faceGlow = ctx.createRadialGradient(childX, childY-h*0.13, 0, childX, childY-h*0.13, h*0.3);
+    faceGlow.addColorStop(0,'rgba(80,100,255,0.15)');
+    faceGlow.addColorStop(1,'rgba(80,100,255,0)');
+    ctx.fillStyle=faceGlow;
+    ctx.fillRect(0,0,w,h);
+
+    drawXRayOverlay(ctx,w,h);
+
+    // Notification pop from screen
+    if (Math.floor(t/60) % 4 === 0 && t%60 < 45) {
+      const popAlpha = Math.min(1, (t%60)/15) * Math.max(0,(45-t%60)/15);
+      ctx.globalAlpha = popAlpha;
+      ctx.fillStyle='#1a0030';
+      ctx.fillRect(w*0.55, h*0.78, w*0.42, h*0.1);
+      ctx.strokeStyle='#8040ff'; ctx.lineWidth=1;
+      ctx.strokeRect(w*0.55, h*0.78, w*0.42, h*0.1);
+      ctx.fillStyle='#a060ff'; ctx.font=`${h*0.025}px monospace`;
+      ctx.fillText('📡 DATA SOLD TO 3RD PARTY', w*0.56, h*0.82);
+      ctx.fillStyle='#8040ff'; ctx.font=`${h*0.02}px monospace`;
+      ctx.fillText('Behavioral profile updated', w*0.56, h*0.84);
+      ctx.globalAlpha=1;
+    }
+
+    // X-ray scan beam
+    const scanY2 = (t * 1.0) % (h + 20) - 10;
+    const scanGrad2 = ctx.createLinearGradient(0, scanY2-6, 0, scanY2+6);
+    scanGrad2.addColorStop(0,'rgba(0,255,255,0)');
+    scanGrad2.addColorStop(0.5,'rgba(0,255,255,0.35)');
+    scanGrad2.addColorStop(1,'rgba(0,255,255,0)');
+    ctx.fillStyle = scanGrad2;
+    ctx.fillRect(0, scanY2-6, w, 12);
+
+    t++;
+    animFrame = requestAnimationFrame(frame);
+  }
+  frame();
+}
+</script>
+
+</body>
+</html>
