@@ -78,3 +78,21 @@ while playing:
         print("Please enter 1, 2, or 3.")
 
 print("Thanks for playing!")
+
+
+#Python Game Extra Credit Essay
+#I decided to make a murder mystery game because I've always been into detective movies and characters like Sherlock Holmes and Knives Out. 
+#The idea of narrowing down suspects based on clues seemed like something that would go well with a text-based Python game, and it gave me a 
+#good excuse to practice using dictionaries and loops in a way that actually felt useful instead of just doing assignments. I wanted it to feel 
+#like you're actually investigating something, not just picking from a menu, even though technically that's what you're doing.
+#The main data structure I used was a dictionary that maps each suspect's name to their clue, which made it easy to look up information when the 
+#player chooses someone to question. I used a while loop for the core game loop so the player can keep investigating until they're ready to make a 
+#guess, and I stored the clues the player has already seen in a list so they can review them before accusing anyone. I also used the random module 
+#to randomly assign the guilty suspect each time the game runs, which makes the game replayable since you can't just memorize the answer. Handling 
+#user input was important too. I had to normalize capitalizing letters so that typing "alice" or "ALICE" would still match "Alice" in the dictionary, 
+#which I did using string slicing and the upper() and lower() functions.
+#The trickiest part of the project was honestly just getting the game flow to feel right. My first version was kind of all over the place so I ended 
+#up restructuring it so the reveal only happens when the player picks option 3, and then the game ends smoothly after that. I also had a small bug at 
+#first where the game would crash if you typed in a name that wasn't in the suspect list during the killer reveal, so I had to add a check for that. 
+#Overall, I'm pretty happy with how it turned out, and if I had more time I'd probably add multiple rounds, more suspects, and maybe even a voting 
+#system like in the town judge leetcode problem.
